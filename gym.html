@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健身中心預約-SRW</title>
+    <link rel="stylesheet" href="CSS/booking.css">
+</head>
+<body>
+    <div class="header-container">
+        <h1 class="title">靜宜大學-體育館租借平台</h1>
+        <div class="nav-buttons">
+            <a href="web.html" class="button-link"><button>首頁</button></a>
+            <a href="allnews2.html" class="button-link"><button type="button">最新消息</button></a>
+            <a href="place.html" class="button-link"><button type="button">場地列表</button></a>
+            <button>聯絡我們</button>
+            <a href="login.html" class="button-link"><button type="button">登出</button></a>
+        </div>
+    </div>
+    <!-- 主要內容區域 -->
+    <div class="main-content">
+        <h2 class="page-title">預約場地</h2>
+
+        <!-- 場地展示區域 - 圖片和說明在上方 -->
+        <div class="venue-showcase">
+            <div class="venue-image">
+                <img src="images/05.jpg" alt="健身中心">
+            </div>
+            <div class="venue-info">
+                <h3 class="venue-name">健身中心</h3>
+                <div class="venue-description">
+                    <p>1.應穿著運動服裝及運動鞋，禁止穿著皮鞋、高跟鞋、拖鞋等不合規定之鞋類進入羽球場，以免損壞地面。</p>
+                    <p>2.請維護場地之清潔，並將使用過之舊球及垃圾丟棄至垃圾桶內。</p>
+                    <p>3.為使羽球場充分利用，每面球場以 4~8 人共用為原則，若登記使用人數眾多須接受併場之安排。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 預約表單 - 在下方 -->
+        <div class="booking-form">
+            <h3 class="form-title">選擇預約時段</h3>
+            
+            <!-- 表單上半部分 -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">選擇日期</label>
+                    <input type="date" class="form-input" id="booking-date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">參加人數</label>
+                    <input type="number" class="form-input" min="1" max="2" value="1" id="people-count">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">場地</label>
+                    <div class="form-display">健身中心</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">主要聯絡人電話</label>
+                    <input type="tel"
+                           class="form-input" 
+                           id="contact-phone" 
+                           placeholder="請輸入電話" 
+                           pattern="09\d{2}-?\d{3}-?\d{3}" 
+                           maxlength="10" 
+                           required
+                        >
+                </div>
+            </div>
+
+            <!-- 學號輸入區域 -->
+            <div class="student-ids-container">
+                <label class="form-label">學號（需與預約人數相同）</label>
+                <div class="student-id-inputs" id="student-id-inputs">
+                    <input type="text"
+                           class="form-input student-id"
+                           placeholder="請輸入學號"
+                           pattern="S\d{8}"
+                           maxlength="9"
+                           required
+                        >
+
+                </div>
+                <div id="student-id-error" class="error-message">學號數量必須與參加人數相符</div>
+            </div>
+            
+            <!-- 時間選擇（改成動態容器） -->
+                <h4 style="margin-top: 20px;">選擇時段：</h4>
+                <div id="time-slots-container"></div>
+
+
+            <!-- 提交按鈕 -->
+            <button class="submit-button" id="submit-booking">提交預約</button>
+
+        </div>
+    </div>
+
+    <script src="javascript/gym.js"></script>
+</body>
+</html>

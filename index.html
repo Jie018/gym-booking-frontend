@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>體育館租借系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<header>
+    <link rel="stylesheet" href="css/style.css">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- <a class="navbar-brand" href="#">體育館租借系統</a> --> 
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="images/logo.jpg" alt="Logo" class="navbar-logo">
+                <span class="ml-2">體育館場地租借平台</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ITEMS">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="ITEMS">
+                <!-- 居中顯示的項目 -->
+                
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="#home" class="nav-link active">首頁</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="allnews.html" class="nav-link active">最新消息</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#services" class="nav-link active">服務項目</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link active">關於我們</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact" class="nav-link active">聯絡我們</a>
+                        </li>
+                        <li class="nav-item" >
+                            <a href="login.html" class="nav-link active ">登入 / 註冊</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header> 
+
+<!-- 輪播區塊 -->
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="carousel-image-container">
+                <img src="images/building.jpg" class="d-block w-100" alt="First Slide">
+                <div class="my-caption">若望保祿二世 體育館</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="carousel-image-container">
+                <img src="images/basketball.jpg" class="d-block w-100" alt="Second Slide">
+                <div class="my-caption">籃球場 / 排球場</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="carousel-image-container">
+                <img src="images/badminton.jpg" class="d-block w-100" alt="Third Slide">
+                <div class="my-caption">羽球場</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="carousel-image-container">
+                <img src="images/table.jpg" class="d-block w-100" alt="Fourth Slide">
+                <div class="my-caption">桌球場</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="carousel-image-container">
+                <img src="images/1F.jpg" class="d-block w-100" alt="Fifth Slide">
+                <div class="my-caption">1 樓健身房</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="carousel-image-container">
+                <img src="images/3F.jpg" class="d-block w-100" alt="Six Slide">
+                <div class="my-caption">3 樓健身房</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="carousel-image-container">
+                <img src="images/fly.jpg" class="d-block w-100" alt="Seven Slide">
+                <div class="my-caption">飛輪教室</div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- 相關連結&最新消息輪播區 -->
+<div class="news-layout">
+    <!-- 左邊：相關連結 -->
+    <div class="link-section">
+        <div class="link-header">相關連結</div>
+        <div class="link-item">
+          <a href="https://www.pu.edu.tw/" target="_blank">靜宜大學官網</a>
+        </div>
+        <div class="link-item">
+          <a href="https://phyed.pu.edu.tw/" target="_blank">體育室官網</a>
+        </div>
+        <div class="link-item">
+            <a href="https://b023.pu.edu.tw/p/404-1049-21562.php?Lang=zh-tw" target="_blank">體育館開放時間</a>
+          </div>
+      </div>
+      
+    <!-- 輪播最新消息 -->
+    <div class="news-section"> 
+        <div class="news-box-header">
+            <h2 class="news-box-title">最新消息</h2>
+        </div>
+
+        <!-- 公告內容框 -->
+        <div class="news-box" id="news">
+            <!-- 輪播 -->
+            <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <ul class="news-box-list">
+                            <li class="news-box-item">
+                                <a href="ann2.html" class="news-box-link">
+                                    <span class="news-box-content">5月籃球場可預約時段更新。</span>
+                                </a>
+                                <span class="news-box-date">2025-04-16</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="carousel-item">
+                        <ul class="news-box-list">
+                            <li class="news-box-item">
+                                <a href="ann.html" class="news-box-link">
+                                    <span class="news-box-content">系統將於 4/20 凌晨進行維護作業，暫停服務。</span>
+                                </a>
+                                <span class="news-box-date">2025-04-15</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="carousel-item">
+                        <ul class="news-box-list">
+                            <li class="news-box-item">
+                                <a href="ann3.html" class="news-box-link">
+                                    <span class="news-box-content">體育館 4/15 全館消毒作業，休館公告。</span>
+                                </a>
+                                <span class="news-box-date">2025-04-10</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="news-box-more">
+            <a href="allnews.html" class="news-box-more-btn">查看更多</a>
+        </div>
+    </div>
+</div>
+
+<!-- 服務項目 -->
+<h2 class="section-title">服務項目</h2>
+<div class="services-wrapper">
+    <div id="way">
+      <img src="images/process.png" alt="預約流程" class="service-image">
+      <h3>我們致力於提供師生一個方便、高效的場地租借平台。</h3>
+      <hr>
+      <p><a href="process.html" class="nav-link">預約流程</a></p>
+    </div>
+
+    <div id="services">
+        <img src="images/reserve.png" alt="預約" class="service-image">
+        <h3>選擇您想使用的場地與時段，即時線上預約並查看狀態。</h3>
+        <hr>
+        <p><a href="#" id="login-link" class="nav-link">預約</a></p>
+      </div>
+    
+    <div id="search">
+        <img src="images/search.png" alt="查詢與取消" class="service-image">
+        <h3>隨時查詢已預約資訊，並支援線上取消，管理更方便。</h3>
+        <hr>
+        <p><a href="#" id="search-link" class="nav-link">查詢與取消</a></p>
+      </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+
+<!-- 關於我們 -->
+<div class="about-outer">
+    <div class="about-wrapper">
+      <h2 class="about-title">關於我們</h2>
+      <section id="about">
+        <div class="scroll-text">
+          <p>歡迎使用本校體育館租借系統！無論是系上活動、社團練習或個人運動，都能透過本系統快速預約場地。</p>
+          <p>系統支援多場地查詢、即時狀態更新、線上預約與取消，讓您不再錯過理想時段。</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  
+<!-- 使用規定 -->
+<div class="rule-outer">
+    <div class="rule-wrapper">
+      <h2 class="rule-title">使用規定</h2>
+      <section id="rule">
+        <div class="scroll-text">
+            <p>*使用者需穿著運動服裝及專用運動鞋，禁止穿著皮鞋、高跟鞋、拖鞋等不合規定之鞋類進入場地，以免損壞場地或造成受傷。</p>
+            <p>*請愛惜場地及運動器材，保持良好使用狀態；若有非正常使用之損壞，需照價賠償。</p>
+            <p>*請維持場地整潔，垃圾自行帶離，不得隨意丟棄。</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<!-- 聯絡我們 -->
+<section id="contact">
+    <h2>聯絡我們</h2>
+    <p>若有任何問題，歡迎透過以下方式與我們聯繫：</p>
+    <ul>
+        <li>電話：04-12345678</li>
+        <li>Email：gym@university.edu.tw</li>
+        <li>地址：台中市沙鹿區台灣大道七段200號</li>
+    </ul>
+</section>
+
+<!-- JS Scripts -->
+<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<!-- 登入狀態處理 -->
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+        const username = localStorage.getItem("username");
+
+        if (isLoggedIn && username) {
+            document.getElementById("login-item").classList.add("d-none");
+            document.getElementById("user-info").classList.remove("d-none");
+            document.getElementById("logout-item").classList.remove("d-none");
+            document.getElementById("username-display").textContent = `${username}，您好`;
+        }
+    });
+
+    function logout() {
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("username");
+        alert("您已成功登出！");
+        location.reload();
+    }
+
+//========== 預約登入提示 ==========
+document.addEventListener("DOMContentLoaded", function () {
+  const loginLink = document.getElementById("login-link");
+
+  if (loginLink) {
+    loginLink.addEventListener("click", function (e) {
+      e.preventDefault(); // 阻止預設跳轉
+
+      Swal.fire({
+        imageUrl: 'images/warn.jpg', // 你的圖片路徑
+        imageWidth: 80, 
+        imageHeight: 80,
+        title: '尚未登入',
+        text: '請先登入以使用預約功能',
+        showCancelButton: true,
+        confirmButtonText: '前往登入',
+        cancelButtonText: '取消',
+        confirmButtonColor: '#2c3e50',
+        cancelButtonColor: 'gray'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "login.html"; // 跳轉到登入頁
+        }
+      });
+    });
+  }
+});
+
+//========== 查詢取消登入提示 ==========
+document.addEventListener("DOMContentLoaded", function () {
+  const searchLink = document.getElementById("search-link");
+
+  if (searchLink) {
+    searchLink.addEventListener("click", function (e) {
+      e.preventDefault(); // 阻止預設跳轉
+
+      Swal.fire({
+        imageUrl: 'images/warn.jpg', // 你的圖片路徑
+        imageWidth: 80, 
+        imageHeight: 80,
+        title: '尚未登入',
+        text: '請先登入以使用查詢、取消功能',
+        showCancelButton: true,
+        confirmButtonText: '前往登入',
+        cancelButtonText: '取消',
+        confirmButtonColor: '#2c3e50',
+        cancelButtonColor: 'gray'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "login.html"; // 跳轉到登入頁
+        }
+      });
+    });
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>靜宜大學-體育館場地預約</title>
+        
+        
+        <link rel="stylesheet" href="css/web.css">
+</head>
+    <body>
+        <div class="header-container">
+        <h1 class="title">靜宜大學-體育館預約平台</h1>
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-button">首頁</a>
+                <a href="about.html" class="nav-button">關於我們</a>
+                <a href="allnews.html" class="nav-button">最新消息</a>
+                <a href="place.html" class="nav-button">場地列表</a>
+                <a href="contact.html" class="nav-button">聯絡我們</a>
+                <a href="index.html" class="nav-button" onclick="logout()">登出</a>
+            </div>
+        </div>
+
+
+        <div class="main-content">
+            <!-- 左側欄位：用戶資料和預約記錄 -->
+            <div class="left-sidebar">
+                <!-- 用戶資料區域 -->
+                <div class="profile-container">
+                    <div class="profile-picture">
+                        <img src="images/user.png" alt="使用者頭貼">
+                    </div>
+                    <div class="username">使用者:</div>
+                    <!-- <p style="margin: 5px 0;">學號: A12345678</p> -->
+                    <!-- <a href="information.html">
+                        <button style="width: 100%; margin-top: 10px;">使用者資訊</button>
+                    </a> -->
+                </div>
+                
+                <!-- 預約記錄區域 -->
+                <div class="user-bookings">
+                  <h3 class="booking-title">我的預約記錄</h3>
+
+                <!-- 🔽 這裡會由 JS 動態載入 -->
+                  <div id="recent-bookings">
+                      <p>載入中...</p>
+                  </div>
+
+                  <a href="my_reservations.html" class="more-records">查看全部預約 ›</a>
+                </div>
+
+            </div>
+            
+            <!-- 主要內容區域 -->
+            <div class="content-area">
+                <!-- 場地列表 -->
+                <h2 class="page-title">可租借場地</h2>
+                <div class="venue-list">
+                    <!-- 場地卡片 1 -->
+                    <div class="venue-card">
+                        <img src="images/05.jpg" alt="健身中心">
+                        <div class="venue-info">
+                            <h3 class="venue-name">健身中心</h3>
+                            <div class="venue-details">
+                                <p>適合活動: 使用健身器材</p>
+                                <p>注意事項: 預約後至體育館出示學生證以示證明</p>
+                            </div>
+                            <a href="gym.html" class="book-button">立即預約</a>
+                        </div>
+                    </div>
+                    
+                    <!-- 場地卡片 2 -->
+                    <div class="venue-card">
+                        <img src="images/03.jpg" alt="羽球場">
+                        <div class="venue-info">
+                            <h3 class="venue-name">羽球場</h3>
+                            <div class="venue-details">
+                                <p>適合活動: 羽球</p>
+                                <p>注意事項: 預約後至體育館出示學生證以示證明</p>
+                            </div>
+                            <a href="badminton.html" class="book-button">立即預約</a>
+                        </div>
+                    </div>
+                    <!-- 場地卡片 3 -->
+                    <div class="venue-card">
+                        <img src="images/04.jpg" alt="籃排球場">
+                        <div class="venue-info">
+                            <h3 class="venue-name">籃排球場</h3>
+                            <div class="venue-details">
+                                <p>適合活動: 籃球、排球</p>
+                                <p>注意事項: 預約後至體育館出示學生證以示證明</p>
+                            </div>
+                            <a href="BV.html" class="book-button">立即預約</a>
+                        </div>
+                    </div>
+                    
+                    <!-- 場地卡片 4 -->
+                    <div class="venue-card">
+                        <img src="images/02.jpg" alt="桌球教室">
+                        <div class="venue-info">
+                            <h3 class="venue-name">桌球教室</h3>
+                            <div class="venue-details">
+                                <p>適合活動: 桌球</p>
+                                <p>注意事項: 預約後至體育館出示學生證以示證明</p>
+                            </div>
+                            <a href="table.html" class="book-button">立即預約</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="javascript/web.js"></script>
+    </body>
+</html>

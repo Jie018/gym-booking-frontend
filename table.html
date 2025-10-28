@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桌球教室預約-SRW</title>
+    <link rel="stylesheet" href="CSS/booking.css">
+</head>
+<body>
+    <div class="header-container">
+        <h1 class="title">靜宜大學-體育館租借平台</h1>
+        <div class="nav-buttons">
+            <a href="web.html" class="button-link"><button>首頁</button></a>
+            <a href="allnews2.html" class="button-link"><button type="button">最新消息</button></a>
+            <a href="place.html" class="button-link"><button type="button">場地列表</button></a>
+            <button>聯絡我們</button>
+            <a href="login.html" class="button-link"><button type="button">登出</button></a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2 class="page-title">預約場地</h2>
+
+        <div class="venue-showcase">
+            <div class="venue-image">
+                <img src="images/02.jpg" alt="桌球教室">
+            </div>
+            <div class="venue-info">
+                <h3 class="venue-name">桌球教室</h3>
+                <div class="venue-description">
+                    <p>1. 使用者必須穿著運動服裝及換穿乾淨運動鞋，並自備毛巾。</p>
+                    <p>2. 須愛惜球檯，不得搬動、坐、靠球檯，檯面弄濕應立即擦乾。</p>
+                    <p>3. 每面球桌原則上需四人以上共用。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-form">
+            <h3 class="form-title">選擇預約時段</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">選擇日期</label>
+                    <input type="date" class="form-input" id="booking-date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">參加人數</label>
+                    <input type="number" class="form-input" min="2" max="4" value="2" id="people-count">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">場地</label>
+                    <div class="form-display">桌球教室</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">主要聯絡人電話</label>
+                    <input type="tel"
+                           class="form-input" 
+                           id="contact-phone" 
+                           placeholder="請輸入電話" 
+                           pattern="09\d{2}-?\d{3}-?\d{3}" 
+                           maxlength="10" 
+                           required
+                        >
+                </div>
+            </div>
+
+            <div class="student-ids-container">
+                <label class="form-label">學號（需與預約人數相同）</label>
+                <div class="student-id-inputs" id="student-id-inputs">
+                    <input type="text"
+                           class="form-input student-id"
+                           placeholder="請輸入學號"
+                           pattern="S\d{8}"
+                           maxlength="9"
+                           required
+                        >
+                </div>
+                <div id="student-id-error" class="error-message">學號數量必須與參加人數相符</div>
+            </div>
+
+            <h4 style="margin-top: 20px;">選擇時段（點擊可選擇）：</h4>
+            <div id="time-slots-container">
+                <p class="placeholder">請先選擇日期，系統將顯示可預約時段。</p>
+            </div>
+
+            <button id="submit-booking" class="submit-button">提交預約</button>
+
+
+            
+
+        </div>
+    </div>
+
+    <script defer src="javascript/table.js"></script>
+</body>
+</html>

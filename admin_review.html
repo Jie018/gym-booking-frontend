@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>後台審核預約</title>
+    <link rel="stylesheet" href="css/admin_review.css">
+</head>
+<body>
+    <header>
+    <div class="header-container">
+        <h1 class="title">後台預約審核系統</h1>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='index.html'">登出</button>
+        </div>
+    </div>
+    </header>
+    <div class="main-content">
+        <h2 class="page-title">待審核預約列表</h2>
+
+        <div class="table-container">
+            <table class="table" id="adminTable">
+                <thead>
+                    <tr>
+                        <th>建立時間</th>
+                        <th>使用者</th>
+                        <th>場地</th>
+                        <th>日期</th>
+                        <th>時間</th>
+                        <th>人數</th>
+                        <th>學生學號</th>
+                        <th>聯絡電話</th>
+                        <th>狀態</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- JS 會自動填充資料 -->
+                </tbody>
+            </table>
+            <div id="noRecord" class="no-reservation" style="display:none;">目前沒有待審核的預約</div>
+        </div>
+    </div>
+
+    <script src="javascript/admin_review.js"></script>
+</body>
+</html>

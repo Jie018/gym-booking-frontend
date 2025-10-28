@@ -1,0 +1,287 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* ===== Header & Nav ===== */
+.header-container {
+    display: flex;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 20px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.title {
+    flex-grow: 1;
+    margin: 0;
+    color: #f5f5f5;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* 原本的 button 樣式 */
+button {
+    color: black;
+    background-color: #f5f5f5;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #c0c0c0;
+}
+
+/* 新增：導覽按鈕樣式 (共用設計，跟 reserve-button 一致) */
+.nav-button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 8px 15px;/* 控制按鈕內部間距 → 改變大小 */
+    border-radius: 5px;/* 改變圓角 */
+    font-size: 14px;/* 改變文字大小，也會影響整體視覺 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;   /* 移除底線 */
+    display: inline-block;   /* 讓 padding 生效 */
+    box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
+}
+
+.nav-button:hover {
+    background-color: #c0c0c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
+}
+
+.nav-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
+}
+
+/* ===== Layout ===== */
+.main-content {
+    display: flex;
+    padding: 20px;
+}
+
+.left-sidebar {
+    width: 300px;
+    margin-right: 30px;
+    margin-top: 30px;
+}
+
+/* ===== Profile ===== */
+.profile-container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 10px;
+    overflow: hidden;
+    background-color: #ddd;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-picture .default-avatar {
+    color: white;
+    font-size: 60px;
+}
+
+.username {
+    font-size: 25px;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* ===== User Bookings ===== */
+.user-bookings {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 2px solid #ccc;
+}
+
+.booking-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.booking-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #eee;
+}
+
+.booking-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.booking-venue {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.booking-details {
+    font-size: 14px;
+    color: #666;
+}
+
+.booking-status {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* ===== 狀態顏色樣式 ===== */
+
+/* ✅ 已通過 */
+.status-confirmed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* 🕒 審核中 */
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* ❌ 已取消 */
+.status-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* ⏰ 日期已過 */
+.status-expired {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+
+/* ===== Venue List ===== */
+.content-area {
+    flex-grow: 1;
+}
+
+.venue-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.venue-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.venue-card:hover {
+    transform: translateY(-5px);
+}
+
+.venue-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.venue-info {
+    padding: 20px;
+}
+
+.venue-name {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+}
+
+.venue-details {
+    color: #666;
+    font-size: 16px;
+}
+
+.venue-details p {
+    margin: 8px 0;
+}
+
+.book-button {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.book-button:hover {
+    background-color: #45a049;
+}
+
+/* ===== Misc ===== */
+.page-title {
+    text-align: center;
+    color: #333;
+    margin: 30px 0;
+    font-size: 28px;
+}
+
+.more-records {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #0066cc;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.more-records:hover {
+    text-decoration: underline;
+}

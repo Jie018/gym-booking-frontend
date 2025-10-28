@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的預約紀錄</title>
+  <link rel="stylesheet" href="CSS/my_reservations.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <h1 class="title">我的預約紀錄</h1>
+      <div class="nav-buttons">
+        <a href="web.html" class="button-link"><button>首頁</button></a>
+        <a href="allnews2.html" class="button-link"><button>最新消息</button></a>
+        <a href="place.html" class="button-link"><button>場地列表</button></a>
+        <button>聯絡我們</button>
+        <a href="login.html" class="button-link"><button>登出</button></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 未登入提示 -->
+    <section id="no-login" style="display: none; text-align: center; margin-top: 50px;">
+      <p>請先登入以查看預約紀錄。</p>
+      <a href="login.html" class="back-btn">前往登入頁面</a>
+    </section>
+
+    <!-- 預約紀錄區 -->
+    <section id="records-section" style="display: none;">
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>場地名稱</th>
+              <th>開始時間</th>
+              <th>結束時間</th>
+              <th>人數</th>
+              <th>聯絡電話</th>
+              <th>狀態</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="records-body">
+            <!-- JS 動態載入 -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="javascript/my_reservations.js"></script>
+</body>
+</html>

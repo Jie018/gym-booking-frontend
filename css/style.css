@@ -1,0 +1,855 @@
+/* 導覽列區塊 */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2c3e50 !important;
+    /*background-color: #ffffff !important;*/
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+}
+
+/* 將導航列選單靠右對齊 */
+.navbar .navbar-collapse .navbar-nav {
+    margin-left: auto;
+}
+
+/* 導覽列項目橫向排列 */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* 導覽列連結：白色字、無底線 */
+nav ul li a {
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+/* 滑鼠懸停：背景變白，文字保持白色 */
+nav ul li a:hover {
+    background-color: gray;
+    color: white !important;
+}
+
+/* 登入與註冊按鈕：淺藍底、白字 */
+#login-item a,
+#register-item a {
+    color: #f1c40f !important;
+}
+
+/* 登入/註冊滑鼠懸停：改成灰色背景，文字保持白色 */
+#login-item a:hover,
+#register-item a:hover {
+    background-color: #ffffff;
+    color: #2c3e50 !important;
+}
+
+/* 讓 logo 和文字在同一行並垂直置中 */
+.navbar-brand {
+    display: flex;
+    align-items: center;  /* 垂直置中 */
+}
+
+/* 設定 logo 的大小，保證它不會太小 */
+.navbar-logo {
+    width: 180px;  /* 調整 logo 大小，這裡的數字可以根據需求調整 */
+    height: auto;  /* 保持圖片比例 */
+}
+
+/* 文字與 logo 之間的間距及文字大小 */
+.navbar-brand span {
+    margin-left: 15px;  /* 文字與 logo 之間的間距 */
+    font-size: 28px;    /* 調整文字大小 */
+    font-weight: bold;  /* 文字加粗 */
+    color: #9fa0a0;
+}
+
+/*登入*/
+.welcome {
+    margin-top: 50px;
+    text-align: right;
+}
+
+.welcome .btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    background-color: #0056b3;
+    color: white;
+    text-decoration: none;
+}
+
+.welcome .btn:hover {
+    background-color: #007bff;
+}
+
+/* 小螢幕時，選單開啟時顯示的樣式 */
+@media (max-width: 767px) {
+    .navbar-nav {
+        text-align: center; /* 將導航項目置中 */
+    }
+    .navbar-nav .nav-item {
+        margin-right: 0; /* 小螢幕時項目間無間距 */
+        margin-bottom: 10px; /* 項目之間增加垂直間距 */
+    }
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap; /* 防止換行 */
+      }
+    
+      .navbar-brand {
+        flex-shrink: 1; /* 讓文字不要硬撐住全部空間 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    
+      .navbar-toggler {
+        flex-shrink: 0;
+      }
+} 
+
+/* 首頁圖片輪播 */
+/*#carouselExampleAutoplaying {/* 輪播區域與上方導航欄間距 
+    margin-top: 100px; 
+}*/
+
+.carousel {/* 設定輪播區域的外邊距與寬度 */
+    margin-top: 20px; 
+}
+
+.carousel-item {/* 調整輪播圖片的大小 */
+    max-height: 500px;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%; /* 根據容器的最大高度來調整圖片 */
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+.carousel {/* 設定輪播區域大小 */
+    width: 100%; /* 使輪播區域變小 */
+    margin: 0 auto; /* 使輪播區域居中 */
+}
+
+.carousel-image-container {/* 圖片容器，增加蒙版效果 */
+    position: relative;
+}
+
+.carousel-image-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-image-container::before {/* 增加蒙版效果 */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.500); 
+    z-index: 1;
+}
+
+.my-caption {/* 照片上文字 */
+    position: absolute;
+    bottom: 200px;
+    left: 100px;
+    color: white;
+    font-size: 35px;
+    z-index: 2;
+    font-family: "新細明體", sans-serif;
+}
+
+/* 相關連結 & 最新消息 */
+.news-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.link-section {
+    width: 220px; /* 原本280 */
+    border: 1px solid #3e5c76;
+    border-radius: 0;
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    font-family: sans-serif;
+    margin-top: 80px;
+}
+  
+.link-header {
+    background-color: #2c3e50;
+    color: white;
+    font-size: 20px; /* 原本24px */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px; /* 原本15px */
+}
+  
+.link-item {
+    background-color: white;
+    border-top: 1px solid #ccc;
+    padding: 10px; /* 原本15px */
+    text-align: left;
+}
+  
+.link-item a {
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 16px; /* 原本18px */
+    transition: color 0.3s, text-decoration 0.3s;
+}
+  
+.link-item a:hover {
+    color: #f1c40f;
+    text-decoration: underline;
+}
+
+.news-section {
+    position: relative;
+    width: 700px;
+    margin: 30px auto;
+}
+
+.news-box {
+    background: linear-gradient(to right, #3e5c76, #6f7d92);
+    padding: 25px 15px;
+    border-radius: 20px;
+    margin: 40px auto;
+    width: 700px;
+    height: 180px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.news-box-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.news-box-title {
+    position: relative;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 auto;
+    text-align: center;
+    display: inline-block;
+}
+
+.news-box-title::after {
+    content: "";
+    display: block; /* 改為 block 讓它跟隨標題 */
+    height: 5px;
+    background-color: #e40c0c;
+    width: 80%; /* 與 .section-title::after 同樣的寬度 */
+    margin: 10px auto 0; /* 讓底線居中 */
+}
+
+.news-box-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.news-box-item {
+    position: relative;
+    padding: 30px 10px;
+    font-size: 23px;
+    color: #333;
+    gap: 6px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    align-items: flex-start;
+}
+
+.news-box-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+}
+
+.news-box-content {
+    text-align: left;
+    color: #ffffff;
+    margin-right: 12px;
+    transition: background-color 0.3s;
+    flex-grow: 0;
+}
+
+.news-box-content:hover {
+    cursor: pointer;
+    color: #ede4ab;
+    text-decoration: underline;
+}
+
+.news-box-date {
+    font-size: 14px;
+    color: #ffffff;
+    white-space: nowrap;
+    margin-left: auto;
+    margin-top: 0;
+}
+
+.news-box-more {
+    position: absolute;
+    bottom: -35px; /* 框框底部以下一點 */
+    right: 0;
+    bottom: 0px;
+}
+
+.news-box-more-btn {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 12px;
+    background-color: #3e5c76;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.news-box-more-btn:hover {
+    background-color: #33333380;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* 服務內容 */
+.section-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 0px;
+    display: block;
+    padding-bottom: 8px;
+    width: fit-content;  /* 讓標題文字保持原來的寬度 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-title::after {
+    content: "";  /* 插入一個空內容 */
+    display: block;
+    height: 5px;  
+    background-color: #309c4f; 
+    width: 80%;  
+    margin: 10px auto 0;  /* 讓底線居中並設置一些邊距 */
+}
+
+.services-wrapper {
+    text-align: center; /* 讓下面三個 inline-block 元素可以置中對齊 */
+    margin-top: 20px;
+}
+
+#way, #services, #search {/* 單一服務區塊的樣式 */
+    display: inline-block;
+    vertical-align: top;           /* 強制垂直對齊 */
+    background-color: white;
+    padding: 20px;
+    margin: 10px;
+    max-width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    height: 300px;             /* 設置最小高度，防止區塊太小 */
+}
+
+h3 {/* 標題字體設定 */
+    font-size: 14px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#way p, #services p, #search p {
+    font-size: 18px;
+    line-height: 1.6;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #309c4f;
+    display: inline-block;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#way p:hover, #services p:hover, #search p:hover {
+    background-color: gray; 
+    color: #ffffff;            
+}
+
+.service-image {
+    height: 100px;       /* 固定高度 */
+    width: auto;         /* 自動等比例縮放寬度 */
+    object-fit: contain; /* 確保圖片不會變形 */
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+hr {
+    margin-bottom: 0px; /* 或你想要的距離 */
+}
+
+/* 關於我們 */
+.about-outer {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.about-title { 
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 26px;
+    font-weight: bold;
+    border-right: 5px solid rgba(51, 153, 255, 0.5);
+    padding-right: 10px;
+    margin: 0;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+#about {
+    background-color: rgba(225, 225, 225, 0.902);
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: left;    
+}
+
+.about-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* 控制標題和右邊內容之間的距離 */
+    width: 850px;
+}
+
+#about h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#about p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+/*.scroll-box {
+    height: 150px; /* 可調整區塊高度 
+    overflow: hidden;
+    position: relative;
+}*/
+
+/*.scroll-text {
+    display: inline-block;
+    animation: scroll-up 12s linear infinite;
+}/*
+
+/*@keyframes scroll-up {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}*/
+
+/* 使用規定 */
+.rule-outer {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    margin-bottom: 50px;
+}
+
+.rule-title{ 
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 26px;
+    font-weight: bold;
+    border-right: 5px solid rgba(255, 153, 51, 0.5);
+    padding-right: 10px;
+    margin: 0;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+#rule {
+    background-color: rgba(225, 225, 225, 0.902);
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: left;    
+}
+
+.rule-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* 控制標題和右邊內容之間的距離 */
+    width: 850px;
+}
+
+#rule h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#rule p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+/*.scroll-box {
+    height: 150px; /* 可調整區塊高度 
+    overflow: hidden;
+    position: relative;
+}
+
+.scroll-text {
+    display: inline-block;
+    animation: scroll-up 12s linear infinite;
+}/*
+
+/*@keyframes scroll-up {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}*/
+
+/* 聯絡我們 */
+#contact {
+    background-color: #2c3e50; /* 深藍灰背景 */
+    color: #ffffff;            /* 白色文字 */
+    padding: 10px 12px;
+    text-align: center;
+}
+
+#contact h2 {
+    font-size: 20px;
+    margin-bottom:  30px;
+    color: #f1c40f; /* 主標題使用金黃色 */
+    margin-top: 0;
+    text-align: center;
+    margin: 0; /* 移除 margin */
+    padding: 0; /* 移除 padding */
+}
+
+#contact p {
+    font-size: 12px;
+    margin-bottom: 10px;
+    margin-top:15px;
+    text-align: center;
+}
+#contact ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#contact ul li {
+    font-size: 10px;
+    margin-bottom: 8px;
+}
+
+/* 詳細消息內容 */
+.ann-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    padding-top: 30px;
+}
+
+.ann-title-header {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 100px auto 10px auto; 
+    padding: 0;
+    text-align: center;
+    position: relative;
+}
+
+.ann-title-header::after {
+    content: "";
+    display: block;
+    width: 150px;
+    height: 5px;
+    margin: 12px auto 0 auto;
+    background-color: #2c3e50;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); /* 陰影效果 */
+    border-radius: 2px;
+}
+
+.ann-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.ann-block.no-flex {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.ann-block p {
+    width: 100%; /* 設定段落寬度為 100%，這樣可以防止擠壓 */
+    margin-bottom: 10px;
+}
+
+.ann-left {
+    flex: 1;
+}
+
+.ann-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 0;
+    text-align: left;
+}
+
+.ann-right {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.ann-tag.general {
+    display: inline-block;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #a0bf52;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 10px;
+}
+
+.ann-tag.system {
+    display: inline-block;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #e34234 !important;  
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 10px;
+}
+
+.ann-date {
+    font-size: 14px;
+    color: #333;
+    font-weight: normal;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: #333;
+    margin: 20px 0;
+}
+
+.ann-back-btn {
+    display: inline-block;
+    padding: 5px 12px;
+    background-color: #2c3e50;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.ann-back-btn:hover {
+    background-color: gray;
+    transition: background-color 0.3s ease;
+}
+
+/* 最新消息清單頁 */
+.allnews-box-wrapper {
+    padding-top: 30px;
+    margin-top: 0;
+}
+
+.allnews-box {
+    padding: 25px 20px;
+    border-radius: 20px;
+    margin: 40px auto;
+    max-width: 900px;
+}
+
+.allnews-box-title {
+    margin-top: 0; /* 確保不會有預設空間 */
+    margin-bottom: 15px !important;
+    font-size: 20px;
+    text-align: left;
+    color: white;
+    font-weight: bold;
+    /* 方框樣式 */
+    border: 2px solid #333; /* 黑色邊框，可依需求更改顏色或粗細 */
+    padding: 10px 15px;      /* 內距，讓文字不會貼邊 */
+    background-color: #2c3e50; /* 可選：加點背景色來突出 */
+      
+}
+
+.allnews-box-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.allnews-box-item {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #c1ccd4;
+    padding: 10px 5px;
+    font-size: 15px;
+    color: #333;
+    gap: 8px;
+}
+
+.allnews-box-item:last-child {
+    border-bottom: 1px solid #c1ccd4;
+}
+
+.allnews-box-tag {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    margin-right: 15px;
+    margin-left: 0;
+    margin-top: 0;
+}
+
+.allnews-box-tag.general {
+    background-color: #a0bf52;
+}
+
+.allnews-box-tag.system {
+    background-color: #e34234;
+}
+
+.allnews-box-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.allnews-box-content {
+    text-align: left;
+    color: #423f3f;
+    margin-right: 12px;
+    transition: background-color 0.3s;
+    flex-grow: 0;
+}
+
+.allnews-box-content:hover {
+    cursor: pointer;
+    color: #0e62a3;
+    text-decoration: underline;
+}
+
+.allnews-box-date {
+    font-size: 14px;
+    color: #555;
+    white-space: nowrap;
+    margin-left: auto;
+    margin-top: 0;
+}
+
+.allnews-box-more {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.allnews-box-more-btn {
+    display: inline-block;
+    padding: 6px 14px;
+    background-color: #2c3e50;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 小螢幕設計 */
+@media (max-width: 768px) {
+    .newscontent-container {
+        padding: 20px;
+    }
+
+    .news-title {
+        font-size: 24px;
+    }
+
+    .news {
+        font-size: 14px;
+    }
+}
+
+/* 跳轉時不會被導航欄遮住 */
+html {
+    scroll-padding-top: 180px;
+    scroll-behavior: smooth; 
+}
+

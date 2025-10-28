@@ -1,0 +1,115 @@
+/*返回登入頁面按鈕*/
+.back-to-login {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #007bff;
+    transition: color 0.2s;
+}
+
+.back-to-login:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/*頁面與容器置中設定*/
+body {
+    font-family: "Microsoft JhengHei", sans-serif;
+    background-color: #f5f5f5;
+    height: 100vh;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+/*表單標題與分隔線*/
+h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+hr {
+    width: 80%;
+    margin: 0 auto 20px auto;
+    border: none;
+    border-top: 2px solid #ccc;
+}
+
+/*統一輸入框樣式*/
+.login-container input[type="text"],
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    width: 100%;                  /* 使用100%寬度，使所有輸入框長度一致 */
+    padding: 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+p2{
+    font-size: 10px;
+    margin-bottom: 14px;
+}
+/*按鈕樣式*/
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/*按鈕懸浮*/
+button:hover {
+    background-color: #2c3e50;
+}
+
+/*錯誤訊息樣式*/
+#login-error {
+    margin-top: 10px;
+    color: red;
+    font-size: 14px;
+}
+
+/* 密碼框與顯示/隱藏圖示對齊 */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* 密碼框內的圖示 */
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px;  /* 留出空間給圖示 */
+}
+
+.password-wrapper span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+}
+

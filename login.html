@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>登入系統</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <a href="index.html" class="back-to-login">← 返回首頁</a>
+    <div class="login-container">
+        <h2>登入帳號</h2>
+        <hr>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="帳號/Account" required>
+            <input type="password" id="password" placeholder="密碼/Password" required>
+            <button type="submit">登入/login</button>
+            <a href="register.html" class="nav-link">註冊</a>
+            <p id="login-error" style="color: red;"></p>
+        </form>
+    </div>
+
+    <script src="javascript/login.js"></script>
+</body>
+</html>

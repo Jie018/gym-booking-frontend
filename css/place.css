@@ -1,0 +1,171 @@
+/* body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    }
+    
+    .venues-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    
+    .venue-item {
+        margin-bottom: 30px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .venue-image {
+        width: 100%;
+        height: 300px;
+    }
+    
+    .venue-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .venue-info {
+        padding: 20px;
+    }
+    
+    .venue-name {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .venue-description {
+        color: #555;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    
+    .venue-detail {
+        margin-top: 10px;
+        color: #666;
+    }
+    
+    .bottom-button-container {
+        text-align: center;
+        margin: 40px 0 60px 0;
+    }
+    
+    .reserve-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
+    }
+    
+    .reserve-button:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
+    }
+    
+    .reserve-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
+    } */
+/* ========== 全域設定 ========== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* ========== 場地列表區 ========== */
+.venues-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.venue-item {
+    margin-bottom: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.venue-image {
+    width: 100%;
+    height: 300px;
+}
+
+.venue-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.venue-info {
+    padding: 20px;
+}
+
+.venue-name {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.venue-description {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.venue-detail {
+    margin-top: 10px;
+    color: #666;
+}
+
+/* ========== 預約按鈕區 ========== */
+.bottom-button-container {
+    text-align: center;
+    margin: 40px 0 60px 0;
+}
+
+.reserve-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
+}
+
+.reserve-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
+}
+
+.reserve-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
+}

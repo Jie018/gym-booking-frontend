@@ -1,0 +1,186 @@
+/* === 頁首導覽列 === */
+.header-container {
+    display: flex;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 20px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.title {
+    flex-grow: 1;
+    margin: 0;
+    color: #f5f5f5;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    color: black;
+    background-color: #f5f5f5;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #f0f0f0;
+}
+/* === 後台表格樣式 === */
+.table-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 30px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table thead {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* 狀態顏色 */
+.status-pending {
+    /* 底色 */
+    color: orange;               /* 文字顏色 */
+    font-weight: bold;
+    padding: 3px 8px;            /* 上下/左右內距，可自行調整 */
+          /* 圓角 */
+    text-align: center;           /* 文字置中 */
+}
+
+
+.status-approved {
+    background-color: #d4edda;
+    color: green; 
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.status-cancelled {
+    background-color: #f8d7da;
+    color: gray; 
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.status-rejected {
+    background-color: #d1d1d1;
+    color: red; 
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.status-expired {
+    background-color: #d1d1d1;
+    color: #555;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* 按鈕樣式 */
+button {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.approve-btn {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 5px;
+}
+
+.approve-btn:hover {
+    background-color: #45a049;
+}
+
+.reject-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.reject-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* 無資料提示 */
+.no-reservation {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+    padding: 30px 0;
+}
+
+.student-badge {
+    display: inline-block;
+    background-color: #e0f7fa;
+    color: #00796b;
+    padding: 2px 6px;
+    margin: 2px 2px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+/* ---------- 表格版面優化 ---------- */
+.table-container {
+    overflow-x: auto; /* 如果欄位太多，可橫向滾動 */
+}
+
+.table {
+    table-layout: fixed; /* 固定欄位寬度，避免擠壓 */
+    width: 100%;
+}
+
+.table th, .table td {
+    word-wrap: break-word; /* 文字過長自動換行 */
+    white-space: normal;
+}
+
+/* 指定欄位寬度，避免擠壓 */
+.table th:nth-child(1), .table td:nth-child(1) { width: 100px; }   /* 使用者 */
+.table th:nth-child(2), .table td:nth-child(2) { width: 120px; }   /* 場地 */
+.table th:nth-child(3), .table td:nth-child(3) { width: 80px; }    /* 日期 */
+.table th:nth-child(4), .table td:nth-child(4) { width: 140px; }   /* 時間 */
+.table th:nth-child(5), .table td:nth-child(5) { width: 60px; }    /* 人數 */
+.table th:nth-child(6), .table td:nth-child(6) { width: 120px; }   /* 聯絡電話 */
+.table th:nth-child(7), .table td:nth-child(7) { width: 120px; }   /* 學生學號 */
+.table th:nth-child(8), .table td:nth-child(8) { width: 200px; }   /* 建立時間 */
+.table th:nth-child(9), .table td:nth-child(9) { width: 80px; }    /* 狀態 */
+.table th:nth-child(10), .table td:nth-child(10) { width: 140px; } /* 操作按鈕 */
+
+/* 按鈕美化，減少欄位寬度 */
+.approve-btn, .reject-btn {
+    padding: 4px 8px;
+    margin: 2px 0;
+    font-size: 0.9rem;
+}
+
