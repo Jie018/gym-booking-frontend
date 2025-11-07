@@ -36,7 +36,7 @@ function loadAvailableSlots() {
   container.innerHTML = '';
 
   if (!date) return;
-  const API_BASE = 'http://127.0.0.1:8000'; 
+  const API_BASE = 'https://gym-booking-backend-1.onrender.com'; 
 fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`) 
   .then(async (res) => {
     const data = await res.json();
@@ -75,41 +75,6 @@ fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`)
     container.innerHTML = '<p>無法載入時段，請稍後重試。</p>';
   });
 
-  // fetch(`http://127.0.0.1:8000/api/available_slots?venue_id=${venueId}&date=${date}`)
-  //   .then(async (res) => {
-  //     const data = await res.json();
-  //     if (!res.ok) throw new Error(data.detail || '載入可預約時段失敗');
-
-  //     if (!Array.isArray(data) || data.length === 0) {
-  //       container.innerHTML = '<p>此日無可預約時段。</p>';
-  //       return;
-  //     }
-
-  //     data.forEach(slot => {
-  //       const startHHMM = formatTime(slot.start_time);
-  //       const endHHMM = formatTime(slot.end_time);
-
-  //       const input = document.createElement('input');
-  //       input.type = 'radio';
-  //       input.name = 'time_slot';
-  //       input.value = `${startHHMM}|${endHHMM}`;
-  //       input.id = `slot_${slot.id}`;
-
-  //       const label = document.createElement('label');
-  //       label.htmlFor = input.id;
-  //       label.style.display = 'block';
-  //       label.style.cursor = 'pointer';
-  //       label.style.padding = '8px 0';
-  //       label.textContent = `${startHHMM} - ${endHHMM}`;
-
-  //       label.insertBefore(input, label.firstChild);
-  //       container.appendChild(label);
-  //     });
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //     container.innerHTML = '<p>無法載入時段，請稍後重試。</p>';
-  //   });
 }
 
 // 送出預約
@@ -184,7 +149,7 @@ function handleBooking() {
 
    console.log("📤 健身中心 Booking 資料即將送出：", bookingData);
 
-  fetch('http://127.0.0.1:8000/api/book', {
+  fetch(`${API_BASE}/api/book`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(bookingData)

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const userId = localStorage.getItem("user_id");
-  const API_BASE = "http://127.0.0.1:8000";
+  const API_BASE = "https://gym-booking-backend-1.onrender.com";
   const container = document.getElementById("recent-bookings");
 
   // 若尚未登入

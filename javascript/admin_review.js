@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE = "http://127.0.0.1:8000/api";
+    const API_BASE = "https://gym-booking-backend-1.onrender.com/api";
     const tbody = document.querySelector("#adminTable tbody");
     const noRecord = document.getElementById("noRecord");
 
