@@ -66,23 +66,23 @@ body {
 
 
 #login-form .nav-link {
-    display: block;
-    /* width: 100%;
-   
-    
-    border-radius: 5px;
-    background-color: #28a745; */
-    
-    margin-top: 10px;
+    display: inline-block;   /* 改成 inline-block 讓它們在同一行 */
+    margin-top: 10px;        /* 上方間距保持原本的 */
+    margin-right: 10px;      /* 右邊間距，讓兩個連結不要太靠近 */
     color: black;
     font-size: 14px;
-    text-decoration: none;
+    text-decoration: underline; /* 保留底線 */
     text-align: center;
-    text-decoration: underline;
 }
+
+#login-form .nav-link:last-child {
+    margin-right: 0;         /* 最後一個連結不要多餘間距 */
+}
+
 
 /* 錯誤訊息樣式 */
 #login-error {
     margin-top: 15px;
     font-size: 14px;
 }
+

@@ -25,7 +25,7 @@ document.getElementById("login-form").addEventListener("submit", async function(
           localStorage.setItem("user_id", result.user_id);   // 使用者 id
 
           alert("登入成功！");
-          window.location.href = "manage.html";
+          window.location.href = "admin_review.html";
       } else {
           document.getElementById("login-error").textContent = result.detail || "登入失敗";
       }
