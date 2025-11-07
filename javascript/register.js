@@ -40,7 +40,7 @@ document.querySelector("button").addEventListener("click", async function(e) {
 
     // 檢查是否有重複的使用者名稱
     try {
-        const response = await fetch(`http://127.0.0.1:8000/check_username?username=${username}`);
+        const response = await fetch(`https://gym-booking-backend-1.onrender.com/check_username?username=${username}`);
         const result = await response.json();
         if (result.exists) {
             errorMsg.textContent = "此使用者名稱已存在，請選擇其他名稱";
@@ -53,7 +53,7 @@ document.querySelector("button").addEventListener("click", async function(e) {
 
     // 成功才送出請求
     try {
-        const response = await fetch("http://127.0.0.1:8000/register", {
+        const response = await fetch("https://gym-booking-backend-1.onrender.com/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
