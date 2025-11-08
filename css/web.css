@@ -173,7 +173,7 @@ button:hover {
 
 /* ===== 狀態顏色樣式 ===== */
 
-/* ✅ 已通過 */
+/* ✅ 已確認 */
 .status-confirmed {
     background-color: #d4edda;
     color: #155724;
