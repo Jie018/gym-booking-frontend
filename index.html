@@ -25,7 +25,7 @@
                 
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="#home" class="nav-link active">首頁</a>
+                            <a href="#" class="nav-link active" id="home-link">首頁</a>
                         </li>
                         <li class="nav-item">
                             <a href="allnews.html" class="nav-link active">最新消息</a>
@@ -135,7 +135,7 @@
                     <div class="carousel-item active">
                         <ul class="news-box-list">
                             <li class="news-box-item">
-                                <a href="ann2.html" class="news-box-link">
+                                <!-- <a href="ann2.html" class="news-box-link"> -->
                                     <span class="news-box-content">5月籃球場可預約時段更新。</span>
                                 </a>
                                 <span class="news-box-date">2025-04-16</span>
@@ -145,7 +145,7 @@
                     <div class="carousel-item">
                         <ul class="news-box-list">
                             <li class="news-box-item">
-                                <a href="ann.html" class="news-box-link">
+                                <!-- <a href="ann.html" class="news-box-link"> -->
                                     <span class="news-box-content">系統將於 4/20 凌晨進行維護作業，暫停服務。</span>
                                 </a>
                                 <span class="news-box-date">2025-04-15</span>
@@ -155,7 +155,7 @@
                     <div class="carousel-item">
                         <ul class="news-box-list">
                             <li class="news-box-item">
-                                <a href="ann3.html" class="news-box-link">
+                                <!-- <a href="ann3.html" class="news-box-link"> -->
                                     <span class="news-box-content">體育館 4/15 全館消毒作業，休館公告。</span>
                                 </a>
                                 <span class="news-box-date">2025-04-10</span>
@@ -289,6 +289,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+});
+
+document.getElementById("home-link").addEventListener("click", function(e) {
+    e.preventDefault(); // 阻止預設錨點行為
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 平滑滾動到最上方
 });
 
 //========== 查詢取消登入提示 ==========
