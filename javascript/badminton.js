@@ -32,7 +32,6 @@ function loadAvailableSlots() {
 
   if (!date) return;
 
-  const API_BASE = 'https://gym-booking-backend-1.onrender.com'; 
 fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`) 
   .then(async (res) => {
     const data = await res.json();
