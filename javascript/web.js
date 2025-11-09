@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const statusClass =
         r.status === "預約成功" ? "status-confirmed" :
         r.status === "審核中" ? "status-pending" :
+        r.status === "預約失敗" ? "status-failed" :     
         "status-cancelled";
 
       const div = document.createElement("div");
