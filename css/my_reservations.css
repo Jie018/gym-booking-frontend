@@ -26,6 +26,7 @@ body {
     gap: 10px;
 }
 
+/* 原本的 button 樣式 */
 button {
     color: black;
     background-color: #f5f5f5;
@@ -38,7 +39,34 @@ button {
 }
 
 button:hover {
-    background-color: #f0f0f0;
+    background-color: #c0c0c0;
+}
+
+/* 新增：導覽按鈕樣式 (共用設計，跟 reserve-button 一致) */
+.nav-button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 8px 15px;/* 控制按鈕內部間距 → 改變大小 */
+    border-radius: 5px;/* 改變圓角 */
+    font-size: 14px;/* 改變文字大小，也會影響整體視覺 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;   /* 移除底線 */
+    display: inline-block;   /* 讓 padding 生效 */
+    box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
+}
+
+.nav-button:hover {
+    background-color: #c0c0c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
+}
+
+.nav-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
 }
 
 /* === 主要內容區域 === */

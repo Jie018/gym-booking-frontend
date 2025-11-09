@@ -1,93 +1,72 @@
-/* body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    }
-    
-    .venues-container {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-    
-    .venue-item {
-        margin-bottom: 30px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-    
-    .venue-image {
-        width: 100%;
-        height: 300px;
-    }
-    
-    .venue-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    
-    .venue-info {
-        padding: 20px;
-    }
-    
-    .venue-name {
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #333;
-    }
-    
-    .venue-description {
-        color: #555;
-        font-size: 16px;
-        line-height: 1.5;
-    }
-    
-    .venue-detail {
-        margin-top: 10px;
-        color: #666;
-    }
-    
-    .bottom-button-container {
-        text-align: center;
-        margin: 40px 0 60px 0;
-    }
-    
-    .reserve-button {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 15px 40px;
-        border-radius: 5px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
-    }
-    
-    .reserve-button:hover {
-        background-color: #45a049;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
-    }
-    
-    .reserve-button:active {
-        transform: translateY(1px);
-        box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
-    } */
 /* ========== 全域設定 ========== */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
+}
+
+/* ===== Header & Nav ===== */
+.header-container {
+    display: flex;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 20px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.title {
+    flex-grow: 1;
+    margin: 0;
+    color: #f5f5f5;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* 原本的 button 樣式 */
+button {
+    color: black;
+    background-color: #f5f5f5;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #c0c0c0;
+}
+
+/* 新增：導覽按鈕樣式 (共用設計，跟 reserve-button 一致) */
+.nav-button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 8px 15px;/* 控制按鈕內部間距 → 改變大小 */
+    border-radius: 5px;/* 改變圓角 */
+    font-size: 14px;/* 改變文字大小，也會影響整體視覺 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;   /* 移除底線 */
+    display: inline-block;   /* 讓 padding 生效 */
+    box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
+}
+
+.nav-button:hover {
+    background-color: #c0c0c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
+}
+
+.nav-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
 }
 
 /* ========== 場地列表區 ========== */

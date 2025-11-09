@@ -171,32 +171,15 @@ button:hover {
     margin-top: 5px;
 }
 
-/* ===== 狀態顏色樣式 ===== */
-
-/* ✅ 已確認 */
 .status-confirmed {
     background-color: #d4edda;
     color: #155724;
 }
 
-/* 🕒 審核中 */
 .status-pending {
     background-color: #fff3cd;
     color: #856404;
 }
-
-/* ❌ 已取消 */
-.status-cancelled {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* ⏰ 日期已過 */
-.status-expired {
-    background-color: #e2e3e5;
-    color: #383d41;
-}
-
 
 /* ===== Venue List ===== */
 .content-area {

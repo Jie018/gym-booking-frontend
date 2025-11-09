@@ -3,9 +3,8 @@
 <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>場地列表-SRW</title>
-
-        <link rel="stylesheet" href="css/personal.css">
+        <title>體育館場租借系統 | 場地列表</title>
+        <!-- <link rel="stylesheet" href="css/personal.css"> -->
         <link rel="stylesheet" href="css/place.css">
 
 </head>
@@ -13,15 +12,10 @@
         <div class="header-container">
             <h1 class="title">靜宜大學-體育館預約平台</h1>
             <div class="nav-buttons">
-                <a href="web.html" class="button-link">
-                    <button>首頁</button>
-                </a>
-                <button>關於我們</button>
-                <a href="place.html" class="button-link">
-                    <button type="button">場地列表</button>
-                </a>
-                <button>聯絡我們</button>
-                <button>登出</button>
+                <a href="web.html" class="nav-button">首頁</a>
+                <a href="place.html" class="nav-button">場地列表</a>
+                <a href="about.html" class="nav-button">關於我們</a>
+                <a href="index.html" class="nav-button" onclick="logout()">登出</a>
             </div>
         </div>
 
@@ -99,7 +93,7 @@
                 </div>
                 <!-- 底部預約按鈕 -->
                 <div class="bottom-button-container">
-                    <button class="reserve-button">立即預約</button>
+                    <a href="web.html" button class="reserve-button">立即預約</button></a>
                 </div>
             </div>
         </body>

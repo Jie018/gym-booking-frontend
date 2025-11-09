@@ -5,6 +5,7 @@ body {
     background-color: #f8f9fa;
 }
 
+/* ===== Header & Nav ===== */
 .header-container {
     display: flex;
     align-items: center;
@@ -18,29 +19,39 @@ body {
     margin: 0;
     color: #f5f5f5;
 }
-
+/* 導覽列按鈕容器 */
 .nav-buttons {
     display: flex;
-    gap: 10px;
+    gap: 10px; /* 按鈕之間距離 */
 }
 
-button {
+/* 導覽列按鈕樣式 */
+.nav-button {
+    background-color: white;
     color: black;
-    background-color: #f5f5f5;
     border: none;
-    padding: 8px 15px;
-    cursor: pointer;
+    padding: 8px 15px; /* 控制內距 */
     border-radius: 5px;
-    transition: background-color 0.3s;
+    font-size: 14px;
     font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none; /* 移除超連結底線 */
+    display: inline-block;
+    box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
 }
 
-button:hover {
-    background-color:#c0c0c0;
+/* 懸停效果 */
+.nav-button:hover {
+    background-color: #c0c0c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
 }
-/* 按鈕懸停效果 */
-button:hover {
-    background-color: #f0f0f0; /* 懸停時變為淺灰色 */
+
+/* 點擊效果 */
+.nav-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
 }
 
 /* 主要內容區域布局 */
