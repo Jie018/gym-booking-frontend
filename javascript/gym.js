@@ -1,6 +1,7 @@
 // gym.js - 健身中心預約
-
+const API_BASE = "https://gym-booking-backend-1.onrender.com";
 // ====== 場地人數限制設定 ======
+
 const venuePeopleLimits = {
   1: { min: 1, max: 1 } // 健身中心
 };

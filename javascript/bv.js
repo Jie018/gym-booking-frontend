@@ -1,5 +1,5 @@
 // basketball.js - 籃球場預約
-
+const API_BASE = "https://gym-booking-backend-1.onrender.com";
 // ====== 場地人數限制設定 ======
 const venuePeopleLimits = {
   3: { min: 5, max: 10 } // 桌球場

@@ -1,5 +1,5 @@
 // badminton.js
-
+const API_BASE = "https://gym-booking-backend-1.onrender.com";
 // 🔧 秒數 → "HH:MM"
 function formatTime(seconds) {
   const hrs = Math.floor(seconds / 3600);

@@ -1,3 +1,4 @@
+const API_BASE = "https://gym-booking-backend-1.onrender.com";
 // ====== 場地人數限制設定 ======
 const venuePeopleLimits = {
   4: { min: 2, max: 4 } // 桌球場
