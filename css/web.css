@@ -182,13 +182,13 @@ button:hover {
 }
 
 .status-failed {
-  color: red;
-  font-weight: bold;
+    background-color: #f8d7da;  
+    color: #721c24;       
 }
 
 .status-cancelled {
-  color: gray;
-  font-style: italic;
+    background-color: #e2e3e5; 
+    color: #6c757d; 
 }
 /* ===== Venue List ===== */
 .content-area {
