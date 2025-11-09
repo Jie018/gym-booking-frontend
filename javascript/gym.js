@@ -162,8 +162,16 @@ function handleBooking() {
   })
   .catch(err => {
     console.error(err);
-    alert(JSON.stringify(err, null, 2));
-  });
+    // 嘗試從 err 物件抓 detail，若沒有就顯示完整訊息
+    let msg;
+    try {
+        const eObj = JSON.parse(err.message);
+        msg = eObj.detail || JSON.stringify(eObj);
+    } catch {
+        msg = err.message;
+    }
+    alert(msg);
+});
 }
 
 // 綁定事件
