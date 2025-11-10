@@ -233,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
       const slots = await res.json();
 
+      console.log("DEBUG 回傳資料:", data); // 👀 看實際回傳結構
+      
       slotContainer.innerHTML = ""; // 清空舊的時段
 
       if (!slots || slots.length === 0) {
