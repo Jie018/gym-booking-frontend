@@ -201,41 +201,39 @@ function handleBooking() {
 //   loadAvailableSlots();
 // });
 
+// 綁定事件
 document.addEventListener('DOMContentLoaded', () => {
-  const venueId = 4; // 固定場地 ID
+  const venueId = 4;
   const today = new Date().toISOString().split('T')[0];
   const dateInput = document.getElementById('booking-date');
-  const venueSelect = document.getElementById('venue-select');
+  const dateSelect = document.getElementById('booking-date');
   const slotContainer = document.getElementById('time-slots-container');
 
-  // 防呆檢查
-  if (!dateInput) {
-    console.error("⚠️ 找不到日期輸入框 (id='booking-date')");
-    return;
-  }
-  if (!slotContainer) {
-    console.error("⚠️ 找不到時段容器 (id='time-slots-container')");
+  // 🧩 檢查 DOM 是否存在
+  console.log("DEBUG DOM:", {
+    dateInputExists: !!dateInput,
+    dateSelectExists: !!dateSelect,
+    slotContainerExists: !!slotContainer,
+  });
+  if (!dateInput || !slotContainer) {
+    console.error("⚠️ 找不到必要 DOM 元素，請確認 id 是否正確");
     return;
   }
 
-  // ✅ 自動偵測今日日期 + 禁止選擇過期日期
+  // 🚫 限制只能選今天以後的日期
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
+  // ===== 載入可預約時段 =====
   async function loadAvailableSlots() {
-    const date = dateInput.value;
-    const currentVenueId = venueSelect ? venueSelect.value : venueId;
-
-    if (!currentVenueId || !date) {
-      slotContainer.innerHTML = "<p>請先選擇日期。</p>";
-      return;
-    }
+    const date = dateSelect.value;
+    if (!venueId || !date) return;
 
     try {
-      const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${currentVenueId}&date=${date}`);
+      const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
       const slots = await res.json();
 
-      slotContainer.innerHTML = ""; // 清空舊時段
+      slotContainer.innerHTML = ""; // 清空舊的時段
 
       if (!slots || slots.length === 0) {
         slotContainer.innerHTML = "<p>此日尚無預約時段</p>";
@@ -252,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const startTime = new Date(`${date}T${slot.start_time}`);
         const endTime = new Date(`${date}T${slot.end_time}`);
 
-        // 🔒 禁用已過時段或超過 21:00 的時段
+        // 若時間已過 或 超過晚上 9 點，就禁用
         if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
           slotBtn.disabled = true;
           slotBtn.style.backgroundColor = "#e2e3e5";
@@ -268,23 +266,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 綁定事件
-  if (venueSelect) venueSelect.addEventListener("change", loadAvailableSlots);
-  dateInput.addEventListener("change", loadAvailableSlots);
+  // 監聽日期變化
+  if (dateSelect) dateSelect.addEventListener("change", loadAvailableSlots);
 
-  // 初始化（保留原功能）
-  updateStudentIdInputs();
-  updatePeopleInputLimit(venueId);
+  // 預設載入今天的可預約時段
   loadAvailableSlots();
-
-  const submitBtn = document.getElementById('submit-booking');
-  if (submitBtn) submitBtn.addEventListener('click', handleBooking);
-
-  const peopleCountInput = document.getElementById('people-count');
-  if (peopleCountInput) {
-    peopleCountInput.addEventListener('change', () => {
-      updateStudentIdInputs();
-      updatePeopleInputLimit(venueId);
-    });
-  }
 });
