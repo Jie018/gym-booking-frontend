@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const today = new Date().toISOString().split('T')[0];
   const dateInput = document.getElementById('booking-date');
   const venueSelect = document.getElementById('venue-select');
-  const slotContainer = document.getElementById('slots-container');
+  const slotContainer = document.getElementById('time-slots-container');
 
   // 防呆檢查
   if (!dateInput) {
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
   if (!slotContainer) {
-    console.error("⚠️ 找不到時段容器 (id='slots-container')");
+    console.error("⚠️ 找不到時段容器 (id='time-slots-container')");
     return;
   }
 
