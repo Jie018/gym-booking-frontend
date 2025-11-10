@@ -231,10 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
-      const slots = await res.json();
+      const data = await res.json();
+      console.log("DEBUG 回傳資料:", data);
 
-      console.log("DEBUG 回傳資料:", data); // 👀 看實際回傳結構
-      
       slotContainer.innerHTML = ""; // 清空舊的時段
 
       if (!slots || slots.length === 0) {
@@ -244,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const now = new Date();
 
-      slots.forEach(slot => {
+      data.forEach(slot => {
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
         slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
