@@ -155,14 +155,15 @@ function handleBooking() {
   })
   .then(async (r) => {
     const res = await r.json();
-    if (!r.ok) throw new Error(JSON.stringify(res, null, 2));
+    if (!r.ok) throw res;  // ✅ 只修改這裡，直接丟物件
     alert('籃球場預約成功！');
     window.location.reload();
-  })
-  .catch(err => {
+})
+.catch(err => {
     console.error(err);
-    alert(JSON.stringify(err, null, 2));
-  });
+    let msg = err.detail || "預約失敗";  // ✅ 只修改這裡，取 detail
+    alert(msg);
+});
 }
 
 // 綁定事件

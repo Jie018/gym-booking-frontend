@@ -145,14 +145,15 @@ function handleBooking() {
   })
   .then(async (r) => {
     const res = await r.json();
-    if (!r.ok) throw new Error(res.detail || res.message || '預約失敗');
+    if (!r.ok) throw res;  // ✅ 只修改這裡，直接丟物件
     alert('羽球場預約成功！');
     window.location.reload();
-  })
-  .catch(err => {
+})
+.catch(err => {
     console.error(err);
-    alert(err.message || '發送錯誤，請稍後再試');
-  });
+    let msg = err.detail || "預約失敗";  // ✅ 只修改這裡，取 detail
+    alert(msg);
+});
 }
 
 // 綁定事件（確保 DOM 已載入後再綁）

@@ -156,14 +156,14 @@ function handleBooking() {
   })
   .then(async (r) => {
     const res = await r.json();
-    if (!r.ok) throw new Error(JSON.stringify(res, null, 2));
-    alert('健身中心預約成功！');
+    if (!r.ok) throw res;  // ✅ 只修改這裡，直接丟物件
+    alert('健身房預約成功！');
     window.location.reload();
-  })
-  .catch(err => {
+})
+.catch(err => {
     console.error(err);
-    console.error("❌ Booking failed:", err);
-    alert("預約失敗，請稍後再試或聯絡管理員");
+    let msg = err.detail || "預約失敗";  // ✅ 只修改這裡，取 detail
+    alert(msg);
 });
 }
 
