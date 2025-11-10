@@ -208,3 +208,47 @@ document.addEventListener('DOMContentLoaded', () => {
   updateStudentIdInputs();
   loadAvailableSlots();
 });
+
+// ===== 函式：刷新可預約時段 =====
+async function refreshAvailableSlots() {
+  const venueId = document.getElementById("venue-select")?.value;
+  const date = document.getElementById("date-select")?.value;
+  if (!venueId || !date) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
+    const slots = await res.json();
+
+    const slotContainer = document.getElementById("slots-container");
+    if (!slotContainer) return;
+
+    slotContainer.innerHTML = ""; // 清空舊的時段
+
+    const now = new Date();
+    const todayStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
+
+    slots.forEach((slot) => {
+      const slotBtn = document.createElement("button");
+      slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
+      slotBtn.className = "slot-btn";
+
+      // 解析時間段
+      const slotStart = new Date(`${date}T${slot.start_time}:00`);
+      const slotEnd = new Date(`${date}T${slot.end_time}:00`);
+
+      // 判斷是否禁用：
+      // 1️⃣ 當天時間已過時段
+      // 2️⃣ 超過 21:00 時段
+      if (slotEnd <= now || slotEnd.getHours() >= 21) {
+        slotBtn.disabled = true;
+        slotBtn.style.backgroundColor = "#e2e3e5"; // 灰色
+        slotBtn.style.color = "#6c757d";
+        slotBtn.title = "此時段已過或不可預約";
+      }
+
+      slotContainer.appendChild(slotBtn);
+    });
+  } catch (err) {
+    console.error("刷新可預約時段失敗", err);
+  }
+}
