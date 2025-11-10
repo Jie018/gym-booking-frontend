@@ -176,14 +176,13 @@ function handleBooking() {
   })
   .catch(err => {
     console.error(err);
-    let msg;
+    let msg = "預約失敗";
     try {
-        msg = JSON.parse(err.message).detail || "預約失敗";
-    } catch {
-        msg = "預約失敗";
-    }
+        const e = JSON.parse(err.message);  // 解析 throw 的 JSON 字串
+        if (e.detail) msg = e.detail;      // 取 detail
+    } catch {}
     alert(msg);
-  }); 
+});
 }
 
 // 綁定事件
