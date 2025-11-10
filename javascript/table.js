@@ -234,6 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       console.log("DEBUG 回傳資料:", data);
 
+      const slots = data.slots || []; // ✅ 正確取出 slots 陣列
+
       slotContainer.innerHTML = ""; // 清空舊的時段
 
       if (!slots || slots.length === 0) {
@@ -243,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const now = new Date();
 
-      data.forEach(slot => {
+      slots.forEach(slot => { // ✅ 改成 slots
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
         slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
@@ -273,3 +275,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // 預設載入今天的可預約時段
   loadAvailableSlots();
 });
+
