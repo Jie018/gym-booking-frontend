@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${r.end_time ? new Date(r.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }) : "-"}</td>
           <td>${r.people_count ?? ""}</td>
           <td>${r.contact_phone ?? ""}</td>
-          <td class="status-${r.status}">${r.status ?? "未指定"}</td>
+          <td class="status-${r.status}">${statusText}</td>
           <td>
             ${
               r.status === "預約成功" || r.status === "審核中"
