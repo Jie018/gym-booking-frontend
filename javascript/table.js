@@ -170,17 +170,13 @@ function handleBooking() {
   })
   .then(async (r) => {
     const res = await r.json();
-    if (!r.ok) throw new Error(JSON.stringify(res, null, 2));
+    if (!r.ok) throw res;  // ✅ 只修改這裡，直接丟物件
     alert('桌球場預約成功！');
     window.location.reload();
-  })
-  .catch(err => {
+})
+.catch(err => {
     console.error(err);
-    let msg = "預約失敗";
-    try {
-        const e = JSON.parse(err.message);  // 解析 throw 的 JSON 字串
-        if (e.detail) msg = e.detail;      // 取 detail
-    } catch {}
+    let msg = err.detail || "預約失敗";  // ✅ 只修改這裡，取 detail
     alert(msg);
 });
 }
