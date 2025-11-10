@@ -201,57 +201,41 @@ function handleBooking() {
 //   loadAvailableSlots();
 // });
 
-// 綁定事件
 document.addEventListener('DOMContentLoaded', () => {
-  const venueId = 4;
+  const venueId = 4; // 固定場地 ID
   const today = new Date().toISOString().split('T')[0];
   const dateInput = document.getElementById('booking-date');
   const venueSelect = document.getElementById('venue-select');
-  const dateSelect = document.getElementById('booking-date');
   const slotContainer = document.getElementById('slots-container');
 
-  // ===== 防呆：檢查 DOM 元素是否存在 =====
-  console.log("DEBUG DOM:", {
-    dateInputExists: !!dateInput,
-    venueSelectExists: !!venueSelect,
-    dateSelectExists: !!dateSelect,
-    slotContainerExists: !!slotContainer
-  });
-
-  // 如果任何必要元素不存在，印出更詳細錯誤並停止
-  if (!dateInput || !venueSelect || !dateSelect || !slotContainer) {
-    console.error("DEBUG ERROR: 某些必要 DOM 元素不存在，請確認 HTML 中有 id=booking-date / id=venue-select / id=slots-container");
+  // 防呆檢查
+  if (!dateInput) {
+    console.error("⚠️ 找不到日期輸入框 (id='booking-date')");
+    return;
+  }
+  if (!slotContainer) {
+    console.error("⚠️ 找不到時段容器 (id='slots-container')");
     return;
   }
 
-  // 設初始日期
+  // ✅ 自動偵測今日日期 + 禁止選擇過期日期
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
   async function loadAvailableSlots() {
-    console.log("DEBUG: loadAvailableSlots() called");
-    // 使用固定 venueId（你說每個場地 JS 都固定一個 ID）
-    const useVenueId = venueId; // 固定 ID
-    const date = dateSelect.value;
-    console.log("DEBUG params:", { API_BASE, useVenueId, date });
+    const date = dateInput.value;
+    const currentVenueId = venueSelect ? venueSelect.value : venueId;
 
-    if (!useVenueId || !date) {
-      console.warn("DEBUG: venueId 或 date 為空，將不發送請求", { useVenueId, date });
-      // 顯示提示給使用者
-      slotContainer.innerHTML = "<p>請先選擇日期或場地。</p>";
+    if (!currentVenueId || !date) {
+      slotContainer.innerHTML = "<p>請先選擇日期。</p>";
       return;
     }
 
-    const url = `${API_BASE}/api/available_slots?venue_id=${useVenueId}&date=${date}`;
-    console.log("DEBUG fetch URL:", url);
-
     try {
-      const res = await fetch(url);
-      console.log("DEBUG fetch response status:", res.status);
+      const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${currentVenueId}&date=${date}`);
       const slots = await res.json();
-      console.log("DEBUG fetch response body:", slots);
 
-      slotContainer.innerHTML = ""; // 清空舊的時段
+      slotContainer.innerHTML = ""; // 清空舊時段
 
       if (!slots || slots.length === 0) {
         slotContainer.innerHTML = "<p>此日尚無預約時段</p>";
@@ -263,12 +247,12 @@ document.addEventListener('DOMContentLoaded', () => {
       slots.forEach(slot => {
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
+        slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
 
         const startTime = new Date(`${date}T${slot.start_time}`);
         const endTime = new Date(`${date}T${slot.end_time}`);
 
-        slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
-
+        // 🔒 禁用已過時段或超過 21:00 的時段
         if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
           slotBtn.disabled = true;
           slotBtn.style.backgroundColor = "#e2e3e5";
@@ -284,16 +268,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 監聽場地或日期變化
+  // 綁定事件
   if (venueSelect) venueSelect.addEventListener("change", loadAvailableSlots);
-  if (dateSelect) dateSelect.addEventListener("change", loadAvailableSlots);
+  dateInput.addEventListener("change", loadAvailableSlots);
 
-  // 初次載入：先更新 UI control，再載入時段
+  // 初始化（保留原功能）
   updateStudentIdInputs();
   updatePeopleInputLimit(venueId);
   loadAvailableSlots();
 
-  // 綁定其他事件（不變）
   const submitBtn = document.getElementById('submit-booking');
   if (submitBtn) submitBtn.addEventListener('click', handleBooking);
 
@@ -304,8 +287,4 @@ document.addEventListener('DOMContentLoaded', () => {
       updatePeopleInputLimit(venueId);
     });
   }
-
-  const datePicker = document.getElementById('booking-date');
-  if (datePicker) datePicker.addEventListener('change', loadAvailableSlots);
 });
-
