@@ -28,6 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+// ===== 新增狀態對應表 =====
+const BookingStatusText = {
+    pending: "審核中",
+    approved: "預約成功",
+    rejected: "預約失敗",
+    cancelled: "已取消"
+};
 
 document.addEventListener("DOMContentLoaded", async () => {
   const userId = localStorage.getItem("user_id");
@@ -53,6 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     reservations.forEach(r => {
+      const statusText = BookingStatusText[r.status] || r.status || "未指定";
       const date = r.start_time ? new Date(r.start_time).toLocaleDateString() : "-";
       const start = r.start_time ? new Date(r.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }) : "-";
       const end = r.end_time ? new Date(r.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }) : "-";
@@ -69,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="booking-details">
           <div>日期：${date}</div>
           <div>時間：${start} - ${end}</div>
-          <div class="booking-status ${statusClass}">${r.status}</div>
+          <div class="booking-status ${statusClass}">${statusText}</div>
         </div>
       `;
       container.appendChild(div);
