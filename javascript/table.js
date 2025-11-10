@@ -182,83 +182,100 @@ function handleBooking() {
 }
 
 // 綁定事件
-// 綁定事件
 document.addEventListener('DOMContentLoaded', () => {
-  // ===== 修改點：移除固定 venueId，改用動態選擇 =====
-  // const venueId = 4;  // 移除這行
-
   const today = new Date().toISOString().split('T')[0];
   const dateInput = document.getElementById('booking-date');
-  const venueSelect = document.getElementById('venue-select');
-  const dateSelect = document.getElementById('booking-date');
-  const slotContainer = document.getElementById('slots-container');
-
   dateInput.setAttribute('min', today);
   dateInput.value = today;
-
-  async function loadAvailableSlots() {
-    const venueId = venueSelect.value; // 使用選擇的場地
-    const date = dateSelect.value;
-    if (!venueId || !date) return;
-
-    try {
-        const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
-        const slots = await res.json();
-
-        slotContainer.innerHTML = ""; // 清空舊的時段
-
-        if (!slots || slots.length === 0) {
-            slotContainer.innerHTML = "<p>此日尚無預約時段</p>";
-            return;
-        }
-
-        const now = new Date();
-
-        slots.forEach(slot => {
-            const slotBtn = document.createElement("button");
-            slotBtn.className = "slot-btn";
-
-            const startTime = new Date(`${date}T${slot.start_time}`);
-            const endTime = new Date(`${date}T${slot.end_time}`);
-
-            slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
-
-            // ===== 修改點：加上 21:00 禁用條件 =====
-            if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
-                slotBtn.disabled = true;
-                slotBtn.style.backgroundColor = "#e2e3e5";
-                slotBtn.style.color = "#6c757d";
-                slotBtn.title = "此時段已不可預約";
-            }
-
-            slotContainer.appendChild(slotBtn);
-        });
-    } catch (err) {
-        console.error("刷新可預約時段失敗", err);
-        slotContainer.innerHTML = "<p>載入時段失敗，請稍後重試。</p>";
-    }
-  }
-
-  // 監聽場地或日期變化
-  if (venueSelect) venueSelect.addEventListener("change", loadAvailableSlots);
-  if (dateSelect) dateSelect.addEventListener("change", loadAvailableSlots);
-
-  // 初次載入
-  updateStudentIdInputs();                       // 先更新學號欄位
-  updatePeopleInputLimit(venueSelect.value);     // 使用動態場地限制人數
-  loadAvailableSlots();                           // 載入可預約時段
 
   const submitBtn = document.getElementById('submit-booking');
   if (submitBtn) submitBtn.addEventListener('click', handleBooking);
 
   const peopleCountInput = document.getElementById('people-count');
-  if (peopleCountInput) {
-    peopleCountInput.addEventListener('change', () => {
-      updateStudentIdInputs();
-      updatePeopleInputLimit(venueSelect.value); // 動態場地
-    });
-  }
+  if (peopleCountInput) peopleCountInput.addEventListener('change', updateStudentIdInputs);
 
   const datePicker = document.getElementById('booking-date');
   if (datePicker) datePicker.addEventListener('change', loadAvailableSlots);
+
+  updateStudentIdInputs();
+  loadAvailableSlots();
 });
+
+// 綁定事件
+// document.addEventListener('DOMContentLoaded', () => {
+//   const venueId = 4;
+//   const today = new Date().toISOString().split('T')[0];
+//   const dateInput = document.getElementById('booking-date');
+//   const venueSelect = document.getElementById('venue-select');
+//   const dateSelect = document.getElementById('booking-date');
+//   const slotContainer = document.getElementById('slots-container');
+
+//   dateInput.setAttribute('min', today);
+//   dateInput.value = today;
+
+//   async function loadAvailableSlots() {
+//     const venueId = venueSelect.value; // 使用選擇的場地
+//     const date = dateSelect.value;
+//     if (!venueId || !date) return;
+
+//     try {
+//         const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
+//         const slots = await res.json();
+
+//         slotContainer.innerHTML = ""; // 清空舊的時段
+
+//         if (!slots || slots.length === 0) {
+//             slotContainer.innerHTML = "<p>此日尚無預約時段</p>";
+//             return;
+//         }
+
+//         const now = new Date();
+
+//         slots.forEach(slot => {
+//             const slotBtn = document.createElement("button");
+//             slotBtn.className = "slot-btn";
+
+//             const startTime = new Date(`${date}T${slot.start_time}`);
+//             const endTime = new Date(`${date}T${slot.end_time}`);
+
+//             slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
+
+//             // ===== 修改點：加上 21:00 禁用條件 =====
+//             if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
+//                 slotBtn.disabled = true;
+//                 slotBtn.style.backgroundColor = "#e2e3e5";
+//                 slotBtn.style.color = "#6c757d";
+//                 slotBtn.title = "此時段已不可預約";
+//             }
+
+//             slotContainer.appendChild(slotBtn);
+//         });
+//     } catch (err) {
+//         console.error("刷新可預約時段失敗", err);
+//         slotContainer.innerHTML = "<p>載入時段失敗，請稍後重試。</p>";
+//     }
+//   }
+
+//   // 監聽場地或日期變化
+//   if (venueSelect) venueSelect.addEventListener("change", loadAvailableSlots);
+//   if (dateSelect) dateSelect.addEventListener("change", loadAvailableSlots);
+
+//   // 初次載入
+//   updateStudentIdInputs();                       // 先更新學號欄位
+//   updatePeopleInputLimit(venueSelect.value);     // 使用動態場地限制人數
+//   loadAvailableSlots();                           // 載入可預約時段
+
+//   const submitBtn = document.getElementById('submit-booking');
+//   if (submitBtn) submitBtn.addEventListener('click', handleBooking);
+
+//   const peopleCountInput = document.getElementById('people-count');
+//   if (peopleCountInput) {
+//     peopleCountInput.addEventListener('change', () => {
+//       updateStudentIdInputs();
+//       updatePeopleInputLimit(venueSelect.value); // 動態場地
+//     });
+//   }
+
+//   const datePicker = document.getElementById('booking-date');
+//   if (datePicker) datePicker.addEventListener('change', loadAvailableSlots);
+// });
