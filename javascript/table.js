@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dateSelect = document.getElementById('booking-date');
   const slotContainer = document.getElementById('time-slots-container');
 
-  // 檢查 DOM
+  // 🧩 檢查 DOM 是否存在
   console.log("DEBUG DOM:", {
     dateInputExists: !!dateInput,
     dateSelectExists: !!dateSelect,
@@ -220,17 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // 限制只能選今天以後的日期
+  // 🚫 限制只能選今天以後的日期
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
-  // 時間格式化函式
-  function formatTime(timeStr) {
-    const [hour, minute] = timeStr.split(':');
-    return `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
-  }
-
-  // 載入可預約時段
+  // ===== 載入可預約時段 =====
   async function loadAvailableSlots() {
     const date = dateSelect.value;
     if (!venueId || !date) return;
@@ -240,27 +234,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       console.log("DEBUG 回傳資料:", data);
 
-      const slots = data.slots || []; // 正確取出 slots 陣列
+      const slots = data.slots || []; // ✅ 正確取出 slots 陣列
+
       slotContainer.innerHTML = ""; // 清空舊的時段
 
-      if (slots.length === 0) {
+      if (!slots || slots.length === 0) {
         slotContainer.innerHTML = "<p>此日尚無預約時段</p>";
         return;
       }
 
       const now = new Date();
 
-      slots.forEach(slot => {
+      slots.forEach(slot => { // ✅ 改成 slots
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
+        slotBtn.textContent = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
 
         const startTime = new Date(`${date}T${slot.start_time}`);
         const endTime = new Date(`${date}T${slot.end_time}`);
 
-        // 顯示格式化時間
-        slotBtn.textContent = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
-
-        // 若時間已過 或 超過晚上 21 點，就禁用
+        // 若時間已過 或 超過晚上 9 點，就禁用
         if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
           slotBtn.disabled = true;
           slotBtn.style.backgroundColor = "#e2e3e5";
@@ -282,3 +275,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // 預設載入今天的可預約時段
   loadAvailableSlots();
 });
+
