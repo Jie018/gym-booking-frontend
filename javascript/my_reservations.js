@@ -5,6 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const tbody = document.getElementById("records-body");
   const API_BASE = "https://gym-booking-backend-1.onrender.com";
 
+  // ===== 這裡放狀態對應表 =====
+  const BookingStatusText = {
+    pending: "審核中",
+    approved: "預約成功",
+    rejected: "預約失敗",
+    cancelled: "已取消"
+  };
+
   // 若未登入則顯示提示
   if (!userId) {
     noLogin.style.display = "block";
@@ -27,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       tbody.innerHTML = "";
       reservations.forEach((r) => {
+        const statusText = BookingStatusText[r.status] || r.status || "未指定"; // 使用對應表
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${r.start_time ? new Date(r.start_time).toLocaleDateString() : "-"}</td>
