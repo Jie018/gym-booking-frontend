@@ -65,9 +65,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const start = r.start_time ? new Date(r.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }) : "-";
       const end = r.end_time ? new Date(r.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }) : "-";
       const statusClass =
-        r.status === "預約成功" ? "status-confirmed" :
-        r.status === "審核中" ? "status-pending" :
-        r.status === "預約失敗" ? "status-failed" :     
+        r.status === "approved" ? "status-confirmed" :
+        r.status === "pending" ? "status-pending" :
+        r.status === "rejected" ? "status-failed" :     
         "status-cancelled";
 
       const div = document.createElement("div");
