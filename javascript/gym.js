@@ -162,15 +162,8 @@ function handleBooking() {
   })
   .catch(err => {
     console.error(err);
-    // 嘗試從 err 物件抓 detail，若沒有就顯示完整訊息
-    let msg;
-    try {
-        const eObj = JSON.parse(err.message);
-        msg = eObj.detail || JSON.stringify(eObj);
-    } catch {
-        msg = err.message;
-    }
-    alert(msg);
+    console.error("❌ Booking failed:", err);
+    alert("預約失敗，請稍後再試或聯絡管理員");
 });
 }
 
