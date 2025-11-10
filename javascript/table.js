@@ -176,8 +176,14 @@ function handleBooking() {
   })
   .catch(err => {
     console.error(err);
-    alert(JSON.stringify(err, null, 2));
-  });
+    let msg;
+    try {
+        msg = JSON.parse(err.message).detail || "預約失敗";
+    } catch {
+        msg = "預約失敗";
+    }
+    alert(msg);
+  }); 
 }
 
 // 綁定事件
