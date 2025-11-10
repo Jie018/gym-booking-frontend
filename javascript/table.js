@@ -186,10 +186,65 @@ document.addEventListener('DOMContentLoaded', () => {
   const venueId = 4;
   const today = new Date().toISOString().split('T')[0];
   const dateInput = document.getElementById('booking-date');
+  const venueSelect = document.getElementById('venue-select');
+  const dateSelect = document.getElementById('booking-date');
+  const slotContainer = document.getElementById('slots-container');
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
-  updatePeopleInputLimit(venueId);
+  async function loadAvailableSlots() {
+    if (!venueSelect || !dateSelect || !slotContainer) return;
+
+    const venueId = venueSelect.value;
+    const date = dateSelect.value;
+    if (!venueId || !date) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
+      const slots = await res.json();
+
+      slotContainer.innerHTML = ""; // 清空舊的時段
+
+      const now = new Date();
+
+      slots.forEach((slot) => {
+        const slotBtn = document.createElement("button");
+        slotBtn.className = "slot-btn";
+
+        // 將後端時間字串組成完整 Date
+        const startTime = new Date(`${date}T${slot.start_time}`);
+        const endTime = new Date(`${date}T${slot.end_time}`);
+
+        slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
+
+        const today21 = new Date();
+        today21.setHours(21, 0, 0, 0);
+        // ===== 禁用條件 =====
+        // 1️⃣ 過期
+        // 2️⃣ 當天 21:00 之後自動禁用
+        if (endTime <= now || (date === today21.toISOString().split('T')[0] && endTime >= today21)) {
+          slotBtn.disabled = true;
+          slotBtn.style.backgroundColor = "#e2e3e5";
+          slotBtn.style.color = "#6c757d";
+          slotBtn.title = "此時段已不可預約";
+        }
+
+        slotContainer.appendChild(slotBtn);
+      });
+    } catch (err) {
+      console.error("刷新可預約時段失敗", err);
+      slotContainer.innerHTML = "<p>載入時段失敗，請稍後重試。</p>";
+    }
+  }
+
+  // 監聽場地或日期變化
+  if (venueSelect) venueSelect.addEventListener("change", loadAvailableSlots);
+  if (dateSelect) dateSelect.addEventListener("change", loadAvailableSlots);
+
+  // 初次載入
+  updateStudentIdInputs();              // 先更新學號欄位
+  updatePeopleInputLimit(venueId);      // 限制人數輸入
+  loadAvailableSlots();                  // 載入可預約時段
 
   const submitBtn = document.getElementById('submit-booking');
   if (submitBtn) submitBtn.addEventListener('click', handleBooking);
@@ -204,51 +259,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const datePicker = document.getElementById('booking-date');
   if (datePicker) datePicker.addEventListener('change', loadAvailableSlots);
-
-  updateStudentIdInputs();
-  loadAvailableSlots();
 });
-
-// ===== 函式：刷新可預約時段 =====
-async function refreshAvailableSlots() {
-  const venueId = document.getElementById("venue-select")?.value;
-  const date = document.getElementById("date-select")?.value;
-  if (!venueId || !date) return;
-
-  try {
-    const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
-    const slots = await res.json();
-
-    const slotContainer = document.getElementById("slots-container");
-    if (!slotContainer) return;
-
-    slotContainer.innerHTML = ""; // 清空舊的時段
-
-    const now = new Date();
-    const todayStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
-
-    slots.forEach((slot) => {
-      const slotBtn = document.createElement("button");
-      slotBtn.textContent = `${slot.start_time} - ${slot.end_time}`;
-      slotBtn.className = "slot-btn";
-
-      // 解析時間段
-      const slotStart = new Date(`${date}T${slot.start_time}:00`);
-      const slotEnd = new Date(`${date}T${slot.end_time}:00`);
-
-      // 判斷是否禁用：
-      // 1️⃣ 當天時間已過時段
-      // 2️⃣ 超過 21:00 時段
-      if (slotEnd <= now || slotEnd.getHours() >= 21) {
-        slotBtn.disabled = true;
-        slotBtn.style.backgroundColor = "#e2e3e5"; // 灰色
-        slotBtn.style.color = "#6c757d";
-        slotBtn.title = "此時段已過或不可預約";
-      }
-
-      slotContainer.appendChild(slotBtn);
-    });
-  } catch (err) {
-    console.error("刷新可預約時段失敗", err);
-  }
-}
