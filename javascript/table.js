@@ -147,27 +147,27 @@ async function handleBooking(venueId, dateInput, peopleCountInput, studentIdCont
   console.log("📤 Booking Payload:", payload);
 
   try {
-    const res = await fetch(`${API_BASE}/book`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+  const res = await fetch(`${API_BASE}/book`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 
-    const data = await res.json();
-    if (res.ok) {
-      alert("✅ 預約成功！");
-      loadAvailableSlots(venueId, bookingDate, slotContainer, (id, start, end) => {
-        selectedSlot.id = id; selectedSlot.start = start; selectedSlot.end = end;
-      });
-    } else {
-      const errData = await res.json();
-      console.log(errData);
-      alert(`❌ 預約失敗：${data.detail || "未知錯誤"}`);
-    }
-  } catch (err) {
-    console.error("提交預約錯誤", err);
-    alert("系統發生錯誤，請稍後再試。");
+  // ⚡ 先讀一次 JSON
+  const errData = await res.json();
+
+  if (res.ok) {
+    alert("✅ 預約成功！");
+    loadAvailableSlots();
+  } else {
+    console.log("後端錯誤訊息:", errData); // 可以看到哪個欄位出問題
+    alert(`❌ 預約失敗：${errData.detail || "未知錯誤"}`);
   }
+
+} catch (err) {
+  console.error("提交預約錯誤", err);
+  alert("系統發生錯誤，請稍後再試。");
+}
 }
 
 // 綁定事件
