@@ -206,46 +206,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const venueId = 4;
   const today = new Date().toISOString().split('T')[0];
   const dateInput = document.getElementById('booking-date');
-  const dateSelect = document.getElementById('booking-date');
   const slotContainer = document.getElementById('time-slots-container');
-
-  // 🧩 檢查 DOM 是否存在
-  console.log("DEBUG DOM:", {
-    dateInputExists: !!dateInput,
-    dateSelectExists: !!dateSelect,
-    slotContainerExists: !!slotContainer,
-  });
-  if (!dateInput || !slotContainer) {
-    console.error("⚠️ 找不到必要 DOM 元素，請確認 id 是否正確");
-    return;
-  }
+  const peopleCountInput = document.getElementById('people-count');
+  const studentIdContainer = document.getElementById('student-id-inputs');
 
   // 🚫 限制只能選今天以後的日期
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
+  // ✅ 動態更新學號欄位
+  function updateStudentIdInputs() {
+    const count = parseInt(peopleCountInput.value, 10);
+    studentIdContainer.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "form-input student-id";
+      input.placeholder = `請輸入第 ${i + 1} 位學號`;
+      input.pattern = "S\\d{8}";
+      input.maxLength = 9;
+      input.required = true;
+      studentIdContainer.appendChild(input);
+    }
+  }
+
+  // 🔄 當人數變動時更新學號欄位
+  if (peopleCountInput) {
+    peopleCountInput.addEventListener("change", updateStudentIdInputs);
+  }
+
   // ===== 載入可預約時段 =====
   async function loadAvailableSlots() {
-    const date = dateSelect.value;
+    const date = dateInput.value;
     if (!venueId || !date) return;
 
     try {
       const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
       const data = await res.json();
-      console.log("DEBUG 回傳資料:", data);
+      const slots = data.slots || [];
 
-      const slots = data.slots || []; // ✅ 正確取出 slots 陣列
+      slotContainer.innerHTML = ""; // 清空舊內容
 
-      slotContainer.innerHTML = ""; // 清空舊的時段
-
-      if (!slots || slots.length === 0) {
-        slotContainer.innerHTML = "<p>此日尚無預約時段</p>";
+      if (slots.length === 0) {
+        slotContainer.innerHTML = "<p class='no-slot'>此日尚無預約時段</p>";
         return;
       }
 
       const now = new Date();
 
-      slots.forEach(slot => { // ✅ 改成 slots
+      slots.forEach(slot => {
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
         slotBtn.textContent = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
@@ -253,13 +262,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const startTime = new Date(`${date}T${slot.start_time}`);
         const endTime = new Date(`${date}T${slot.end_time}`);
 
-        // 若時間已過 或 超過晚上 9 點，就禁用
+        // 若時間已過 或 超過晚上9點，就禁用
         if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
           slotBtn.disabled = true;
-          slotBtn.style.backgroundColor = "#e2e3e5";
-          slotBtn.style.color = "#6c757d";
+          slotBtn.classList.add("slot-disabled");
           slotBtn.title = "此時段已不可預約";
         }
+
+        slotBtn.addEventListener("click", () => {
+          document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
+          slotBtn.classList.add("selected");
+        });
 
         slotContainer.appendChild(slotBtn);
       });
@@ -269,10 +282,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 監聽日期變化
-  if (dateSelect) dateSelect.addEventListener("change", loadAvailableSlots);
+  // ⏰ 時間格式轉換 (秒 → HH:MM)
+  function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
+  }
 
-  // 預設載入今天的可預約時段
+  // 監聽日期變化
+  if (dateInput) dateInput.addEventListener("change", loadAvailableSlots);
+
+  // 初次載入
+  updateStudentIdInputs();
   loadAvailableSlots();
 });
-
