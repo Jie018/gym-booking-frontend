@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
       const data = await res.json();
+      console.log("後端 available_slots raw:", data); // ✅ 印出所有時段
       const slots = data.slots || [];
 
       slotContainer.innerHTML = "";
@@ -97,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
           selectedSlotId = slot.id;
           startHHMM = startText; // ⚡ 保存 HH:MM 作為 payload
           endHHMM = endText;
+          console.log("選擇的時間段:", startHHMM, "-", endHHMM); // ✅ 印出前端選的時間
         });
 
         slotContainer.appendChild(slotBtn);
