@@ -257,18 +257,28 @@ document.addEventListener('DOMContentLoaded', () => {
       slots.forEach(slot => {
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
-        slotBtn.textContent = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
 
-        const startTime = new Date(`${date}T${slot.start_time}`);
-        const endTime = new Date(`${date}T${slot.end_time}`);
+        // 將秒數轉成時間字串（例：61200 -> 17:00）
+        const startText = formatTime(slot.start_time);
+        const endText = formatTime(slot.end_time);
+        slotBtn.textContent = `${startText} - ${endText}`;
 
-        // 若時間已過 或 超過晚上9點，就禁用
+        // 計算實際日期時間
+        const [startHour, startMin] = startText.split(":").map(Number);
+        const [endHour, endMin] = endText.split(":").map(Number);
+        const startTime = new Date(date);
+        const endTime = new Date(date);
+        startTime.setHours(startHour, startMin, 0, 0);
+        endTime.setHours(endHour, endMin, 0, 0);
+
+        // 若時間已過或超過晚上9點，就禁用
         if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
           slotBtn.disabled = true;
           slotBtn.classList.add("slot-disabled");
           slotBtn.title = "此時段已不可預約";
         }
 
+        // 點選時切換樣式
         slotBtn.addEventListener("click", () => {
           document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
           slotBtn.classList.add("selected");
@@ -282,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ⏰ 時間格式轉換 (秒 → HH:MM)
+  // ⏰ 秒數轉成 HH:MM 格式
   function formatTime(seconds) {
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
