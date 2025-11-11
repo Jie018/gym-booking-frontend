@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/api/reservations`, {
+      const res = await fetch(`${API_BASE}/api/book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
