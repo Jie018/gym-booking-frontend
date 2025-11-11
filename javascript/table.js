@@ -165,7 +165,7 @@ async function handleBooking() {
   console.log("📤 Booking Payload (後端格式):", payload);
 
   try {
-    const res = await fetch(`${API_BASE}/book`, {
+    const res = await fetch(`${API_BASE}/api/book`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
