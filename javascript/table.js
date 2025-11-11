@@ -92,14 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         slotBtn.addEventListener("click", () => {
-          document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
-          slotBtn.classList.add("selected");
+        document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
+        slotBtn.classList.add("selected");
 
-          selectedSlotId = slot.id;
-          startHHMM = startText; // ⚡ 保存 HH:MM 作為 payload
-          endHHMM = endText;
-          console.log("選擇的時間段:", startHHMM, "-", endHHMM); // ✅ 印出前端選的時間
-        });
+        selectedSlotId = slot.id;
+
+        // ⚡ 將 HH:MM 轉成秒數
+        const [startH, startM] = startText.split(":").map(Number);
+        const [endH, endM] = endText.split(":").map(Number);
+        startHHMM = startH * 3600 + startM * 60;
+        endHHMM   = endH * 3600 + endM * 60;
+
+        console.log("選擇的時間段（秒數）:", startHHMM, "-", endHHMM);
+    });
 
         slotContainer.appendChild(slotBtn);
       });
@@ -151,7 +156,7 @@ async function handleBooking() {
     user_id: userId,
     venue_id: venueId,
     date: date,
-    time_slots: [startHHMM, endHHMM],  // ["HH:MM","HH:MM"]
+    time_slots: [startHHMM, endHHMM],  // ⚡ 這裡是秒數
     people_count: studentIds.length,
     contact_phone: phone,
     student_ids: studentIds
