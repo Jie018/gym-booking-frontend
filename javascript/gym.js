@@ -155,13 +155,14 @@ async function handleBooking() {
   }
 
   const payload = {
-    user_id: userId,
-    venue_id: venueId,
-    time_slots: [startHHMM, endHHMM],
-    people_count: studentIds.length,
-    contact_phone: contactPhone,
-    student_ids: studentIds,
-  };
+      user_id: userId,
+      venue_id: venueId,
+      date: dateInput.value,            // ⚡ 新增：必填欄位
+      time_slots: [startHHMM, endHHMM],
+      people_count: studentIds.length,
+      contact_phone: phone,
+      student_ids: studentIds,
+    };
 
   console.log("📤 Booking 資料即將送出：", payload);
 

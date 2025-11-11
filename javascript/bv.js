@@ -134,13 +134,14 @@ async function handleBooking() {
   }
 
   const payload = {
-    user_id: userId,
-    venue_id: venueId,
-    time_slots: [startHHMM, endHHMM],       // ⚡ 後端要求的格式 ["HH:MM","HH:MM"]
-    people_count: studentIds.length,         // ⚡ 對應後端欄位
-    contact_phone: phone,                    // ⚡ 對應後端欄位
-    student_ids: studentIds,
-  };
+      user_id: userId,
+      venue_id: venueId,
+      date: dateInput.value,            // ⚡ 新增：必填欄位
+      time_slots: [startHHMM, endHHMM],
+      people_count: studentIds.length,
+      contact_phone: phone,
+      student_ids: studentIds,
+    };
 
   try {
     const res = await fetch(`${API_BASE}/book`, {

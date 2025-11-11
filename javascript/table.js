@@ -147,9 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const payload = {
       user_id: userId,
       venue_id: venueId,
-      time_slots: [startHHMM, endHHMM],    // ⚡ 改成後端要求的 ["HH:MM","HH:MM"]
-      people_count: studentIds.length,      // ⚡ 新增欄位
-      contact_phone: phone,                 // ⚡ 改名稱與後端一致
+      date: dateInput.value,            // ⚡ 新增：必填欄位
+      time_slots: [startHHMM, endHHMM],
+      people_count: studentIds.length,
+      contact_phone: phone,
       student_ids: studentIds,
     };
 
