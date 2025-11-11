@@ -209,6 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const slotContainer = document.getElementById('time-slots-container');
   const peopleCountInput = document.getElementById('people-count');
   const studentIdContainer = document.getElementById('student-id-inputs');
+  const submitBtn = document.getElementById('submit-booking');
+  let selectedSlotId = null; // ✅ 儲存使用者選擇的時段
 
   // 🚫 限制只能選今天以後的日期
   dateInput.setAttribute('min', today);
@@ -258,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
 
-        // 將秒數轉成時間字串（例：61200 -> 17:00）
+        // 秒數轉時間字串
         const startText = formatTime(slot.start_time);
         const endText = formatTime(slot.end_time);
         slotBtn.textContent = `${startText} - ${endText}`;
@@ -271,17 +273,18 @@ document.addEventListener('DOMContentLoaded', () => {
         startTime.setHours(startHour, startMin, 0, 0);
         endTime.setHours(endHour, endMin, 0, 0);
 
-        // 若時間已過或超過晚上9點，就禁用
+        // 禁用條件
         if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
           slotBtn.disabled = true;
           slotBtn.classList.add("slot-disabled");
           slotBtn.title = "此時段已不可預約";
         }
 
-        // 點選時切換樣式
+        // 點擊選擇
         slotBtn.addEventListener("click", () => {
           document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
           slotBtn.classList.add("selected");
+          selectedSlotId = slot.id; // ✅ 儲存 slot_id，送出時用
         });
 
         slotContainer.appendChild(slotBtn);
@@ -299,8 +302,53 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
   }
 
-  // 監聽日期變化
+  // ===== 提交預約 =====
+  async function handleBooking() {
+    const date = dateInput.value;
+    const phone = document.getElementById("contact-phone")?.value;
+    const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value);
+
+    if (!selectedSlotId) {
+      alert("請先選擇一個可預約時段！");
+      return;
+    }
+
+    if (!phone || studentIds.some(id => !id)) {
+      alert("請完整填寫所有欄位！");
+      return;
+    }
+
+    const payload = {
+      venue_id: venueId,
+      slot_id: selectedSlotId,
+      date: date,
+      phone: phone,
+      student_ids: studentIds,
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/api/reservations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        alert("✅ 預約成功！");
+        loadAvailableSlots(); // 重新刷新時段
+      } else {
+        const errData = await res.json();
+        alert(`❌ 預約失敗：${errData.detail || "未知錯誤"}`);
+      }
+    } catch (err) {
+      console.error("提交預約錯誤", err);
+      alert("系統發生錯誤，請稍後再試。");
+    }
+  }
+
+  // 監聽日期變化與提交按鈕
   if (dateInput) dateInput.addEventListener("change", loadAvailableSlots);
+  if (submitBtn) submitBtn.addEventListener("click", handleBooking);
 
   // 初次載入
   updateStudentIdInputs();
