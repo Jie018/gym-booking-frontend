@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const peopleCountInput = document.getElementById('people-count');
   const studentIdContainer = document.getElementById('student-id-inputs');
   const submitBtn = document.getElementById('submit-booking');
-
   let selectedSlotId = null;
   let startHHMM = null;
   let endHHMM = null;
@@ -22,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
-  // 動態產生學號欄位
+  // 動態產生學號輸入欄位
   function updateStudentIdInputs() {
-    const count = parseInt(peopleCountInput.value, 10);
+    const count = parseInt(peopleCountInput.value, 10) || 0;
     studentIdContainer.innerHTML = "";
     for (let i = 0; i < count; i++) {
       const input = document.createElement("input");
@@ -41,11 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     peopleCountInput.addEventListener("change", updateStudentIdInputs);
   }
 
-  // 時間格式轉換
+  // 秒數轉 HH:MM
   function formatTime(seconds) {
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
-    return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
+    return `${hours.toString().padStart(2,"0")}:${mins.toString().padStart(2,"0")}`;
   }
 
   // 載入可預約時段
@@ -71,20 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
 
-        // ⚡ 使用後端提供的 start_time 與 end_time 字串
-        const startText = slot.start_time_str || formatTime(slot.start_time);
-        const endText = slot.end_time_str || formatTime(slot.end_time);
-
+        const startText = formatTime(slot.start_time);
+        const endText = formatTime(slot.end_time);
         slotBtn.textContent = `${startText} - ${endText}`;
 
-        const [startHour, startMin] = startText.split(":").map(Number);
-        const [endHour, endMin] = endText.split(":").map(Number);
-        const startTime = new Date(date);
-        const endTime = new Date(date);
-        startTime.setHours(startHour, startMin, 0, 0);
-        endTime.setHours(endHour, endMin, 0, 0);
+        // ⚡ 原始 datetime 字串
+        slotBtn.dataset.startTimeRaw = slot.start_time_raw;
+        slotBtn.dataset.endTimeRaw   = slot.end_time_raw;
 
-        if (endTime <= now) {
+        // 判斷已過時段
+        const startDt = new Date(slot.start_time_raw);
+        const endDt = new Date(slot.end_time_raw);
+        if (endDt <= now) {
           slotBtn.disabled = true;
           slotBtn.classList.add("slot-disabled");
           slotBtn.title = "此時間段已過無法預約";
@@ -93,11 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
         slotBtn.addEventListener("click", () => {
           document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
           slotBtn.classList.add("selected");
-
-          // ⚡ 儲存後端認可的時間字串
           selectedSlotId = slot.id;
-          startHHMM = startText;
-          endHHMM = endText;
+
+          // ⚡ 從原始 datetime 取 HH:MM
+          startHHMM = slotBtn.dataset.startTimeRaw.slice(11,16); 
+          endHHMM   = slotBtn.dataset.endTimeRaw.slice(11,16);
         });
 
         slotContainer.appendChild(slotBtn);
@@ -112,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function handleBooking() {
     const date = dateInput.value;
     const phone = document.getElementById("contact-phone")?.value;
-    const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value.trim());
+    const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value.trim()).filter(Boolean);
 
     const userIdRaw = localStorage.getItem('user_id');
     const userId = userIdRaw ? Number(userIdRaw) : null;
@@ -127,17 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // 驗證電話
     const phoneRegex = /^09\d{2}-?\d{3}-?\d{3}$/;
     if (!phoneRegex.test(phone)) {
       alert("電話格式錯誤，請輸入 09xx-xxx-xxx 或 09xxxxxxxx");
       return;
     }
 
-    // 驗證學號
     const studentRegex = /^4\d{8}$/;
-    for (let i = 0; i < studentIds.length; i++) {
-      if (!studentRegex.test(studentIds[i])) {
+    for (let s of studentIds) {
+      if (!studentRegex.test(s)) {
         alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
         return;
       }
@@ -146,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const payload = {
       user_id: userId,
       venue_id: venueId,
-      date: date,                    // ⚡ 必填欄位
-      time_slots: [startHHMM, endHHMM], // ⚡ 後端認可的時間字串
+      date: date,
+      time_slots: [startHHMM, endHHMM],
       people_count: studentIds.length,
       contact_phone: phone,
       student_ids: studentIds,
