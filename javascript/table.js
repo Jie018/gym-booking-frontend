@@ -109,73 +109,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 提交預約
-  async function handleBooking() {
-    const date = dateInput.value;
-    const phone = document.getElementById("contact-phone")?.value;
-    const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value.trim());
+  // ---------------------------
+// 提交預約
+// ---------------------------
+async function handleBooking() {
+  const date = dateInput.value;
+  const phone = document.getElementById("contact-phone")?.value;
+  const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value.trim());
 
-    const userIdRaw = localStorage.getItem('user_id');
-    const userId = userIdRaw ? Number(userIdRaw) : null;
-    if (!userId) {
-      alert('請先登入再預約');
-      window.location.href = 'login.html';
+  const userIdRaw = localStorage.getItem('user_id');
+  const userId = userIdRaw ? Number(userIdRaw) : null;
+  if (!userId) {
+    alert('請先登入再預約');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  if (!startHHMM || !endHHMM) {
+    alert("請先選擇一個可預約時段！");
+    return;
+  }
+
+  // 驗證電話
+  const phoneRegex = /^09\d{2}-?\d{3}-?\d{3}$/;
+  if (!phoneRegex.test(phone)) {
+    alert("電話格式錯誤，請輸入 09xx-xxx-xxx 或 09xxxxxxxx");
+    return;
+  }
+
+  // 驗證學號
+  const studentRegex = /^4\d{8}$/;
+  for (let i = 0; i < studentIds.length; i++) {
+    if (!studentRegex.test(studentIds[i])) {
+      alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
       return;
-    }
-
-    if (!selectedSlotId) {
-      alert("請先選擇一個可預約時段！");
-      return;
-    }
-
-    // 驗證電話
-    const phoneRegex = /^09\d{2}-?\d{3}-?\d{3}$/;
-    if (!phoneRegex.test(phone)) {
-      alert("電話格式錯誤，請輸入 09xx-xxx-xxx 或 09xxxxxxxx");
-      return;
-    }
-
-    // 驗證學號
-    const studentRegex = /^4\d{8}$/;
-    for (let i = 0; i < studentIds.length; i++) {
-      if (!studentRegex.test(studentIds[i])) {
-        alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
-        return;
-      }
-    }
-
-    const payload = {
-      user_id: userId,
-      venue_id: venueId,
-      date: date,
-      time_slots: [startHHMM, endHHMM], // ⚡ 後端認可
-      people_count: studentIds.length,
-      contact_phone: phone,
-      student_ids: studentIds,
-    };
-
-    console.log("📤 Booking Payload:", payload);
-
-    try {
-      const res = await fetch(`${API_BASE}/book`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        alert("✅ 預約成功！");
-        loadAvailableSlots(); // 重新載入可用時段
-      } else {
-        const errData = await res.json();
-        console.error("後端錯誤訊息:", errData);
-        alert(`❌ 預約失敗：${errData.detail || "未知錯誤"}`);
-      }
-    } catch (err) {
-      console.error("提交預約錯誤", err);
-      alert("系統發生錯誤，請稍後再試。");
     }
   }
+
+  // ⚡ 修改 payload，完全符合後端欄位
+  const payload = {
+    user_id: userId,
+    venue_id: venueId,
+    date: date,
+    time_slots: [startHHMM, endHHMM],  // ["HH:MM","HH:MM"]
+    people_count: studentIds.length,
+    contact_phone: phone,
+    student_ids: studentIds
+  };
+
+  console.log("📤 Booking Payload (後端格式):", payload);
+
+  try {
+    const res = await fetch(`${API_BASE}/book`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.ok) {
+      alert("✅ 預約成功！");
+      loadAvailableSlots(); // 重新載入可用時段
+    } else {
+      const errData = await res.json();
+      console.error("後端錯誤訊息:", errData);
+      alert(`❌ 預約失敗：${errData.detail || "未知錯誤"}`);
+    }
+  } catch (err) {
+    console.error("提交預約錯誤", err);
+    alert("系統發生錯誤，請稍後再試。");
+  }
+}
+
 
   if (dateInput) dateInput.addEventListener("change", loadAvailableSlots);
   if (submitBtn) submitBtn.addEventListener("click", handleBooking);
