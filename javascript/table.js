@@ -210,13 +210,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const peopleCountInput = document.getElementById('people-count');
   const studentIdContainer = document.getElementById('student-id-inputs');
   const submitBtn = document.getElementById('submit-booking');
-  let selectedSlotId = null; // ✅ 儲存使用者選擇的時段
+  let selectedSlotId = null;
 
-  // 🚫 限制只能選今天以後的日期
+  // 限制只能選今天以後的日期
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
-  // ✅ 動態更新學號欄位
+  // ✅ 動態產生學號輸入欄位
   function updateStudentIdInputs() {
     const count = parseInt(peopleCountInput.value, 10);
     studentIdContainer.innerHTML = "";
@@ -225,14 +225,12 @@ document.addEventListener('DOMContentLoaded', () => {
       input.type = "text";
       input.className = "form-input student-id";
       input.placeholder = `請輸入第 ${i + 1} 位學號`;
-      input.pattern = "S\\d{8}";
       input.maxLength = 9;
       input.required = true;
       studentIdContainer.appendChild(input);
     }
   }
 
-  // 🔄 當人數變動時更新學號欄位
   if (peopleCountInput) {
     peopleCountInput.addEventListener("change", updateStudentIdInputs);
   }
@@ -247,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       const slots = data.slots || [];
 
-      slotContainer.innerHTML = ""; // 清空舊內容
+      slotContainer.innerHTML = "";
 
       if (slots.length === 0) {
         slotContainer.innerHTML = "<p class='no-slot'>此日尚無預約時段</p>";
@@ -260,12 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const slotBtn = document.createElement("button");
         slotBtn.className = "slot-btn";
 
-        // 秒數轉時間字串
         const startText = formatTime(slot.start_time);
         const endText = formatTime(slot.end_time);
         slotBtn.textContent = `${startText} - ${endText}`;
 
-        // 計算實際日期時間
         const [startHour, startMin] = startText.split(":").map(Number);
         const [endHour, endMin] = endText.split(":").map(Number);
         const startTime = new Date(date);
@@ -273,18 +269,17 @@ document.addEventListener('DOMContentLoaded', () => {
         startTime.setHours(startHour, startMin, 0, 0);
         endTime.setHours(endHour, endMin, 0, 0);
 
-        // 禁用條件
-        if (endTime <= now || (startTime.getDate() === now.getDate() && endTime.getHours() >= 21)) {
+        // 若時段已過，禁用並加上提示
+        if (endTime <= now) {
           slotBtn.disabled = true;
           slotBtn.classList.add("slot-disabled");
-          slotBtn.title = "此時段已不可預約";
+          slotBtn.title = "此時間段已過無法預約"; // ✅ hover 顯示文字
         }
 
-        // 點擊選擇
         slotBtn.addEventListener("click", () => {
           document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
           slotBtn.classList.add("selected");
-          selectedSlotId = slot.id; // ✅ 儲存 slot_id，送出時用
+          selectedSlotId = slot.id;
         });
 
         slotContainer.appendChild(slotBtn);
@@ -295,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ⏰ 秒數轉成 HH:MM 格式
+  // 時間格式轉換
   function formatTime(seconds) {
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -308,14 +303,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const phone = document.getElementById("contact-phone")?.value;
     const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value);
 
+    // 檢查是否選擇時段
     if (!selectedSlotId) {
       alert("請先選擇一個可預約時段！");
       return;
     }
 
-    if (!phone || studentIds.some(id => !id)) {
-      alert("請完整填寫所有欄位！");
+    // ✅ 驗證電話格式
+    const phoneRegex = /^09\d{2}-?\d{3}-?\d{3}$/;
+    if (!phoneRegex.test(phone)) {
+      alert("電話格式錯誤，請輸入 09xx-xxx-xxx 或 09xxxxxxxx");
       return;
+    }
+
+    // ✅ 驗證學號格式
+    const studentRegex = /^4\d{8}$/;
+    for (let i = 0; i < studentIds.length; i++) {
+      if (!studentRegex.test(studentIds[i])) {
+        alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
+        return;
+      }
     }
 
     const payload = {
@@ -335,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (res.ok) {
         alert("✅ 預約成功！");
-        loadAvailableSlots(); // 重新刷新時段
+        loadAvailableSlots();
       } else {
         const errData = await res.json();
         alert(`❌ 預約失敗：${errData.detail || "未知錯誤"}`);
@@ -346,11 +353,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 監聽日期變化與提交按鈕
   if (dateInput) dateInput.addEventListener("change", loadAvailableSlots);
   if (submitBtn) submitBtn.addEventListener("click", handleBooking);
 
-  // 初次載入
   updateStudentIdInputs();
   loadAvailableSlots();
 });
