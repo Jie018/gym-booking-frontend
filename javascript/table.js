@@ -160,6 +160,8 @@ async function handleBooking(venueId, dateInput, peopleCountInput, studentIdCont
         selectedSlot.id = id; selectedSlot.start = start; selectedSlot.end = end;
       });
     } else {
+      const errData = await res.json();
+      console.log(errData);
       alert(`❌ 預約失敗：${data.detail || "未知錯誤"}`);
     }
   } catch (err) {
