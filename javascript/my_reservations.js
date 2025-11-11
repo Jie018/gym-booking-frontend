@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <td class="status-${r.status}">${statusText}</td>
           <td>
             ${
-              r.status === "預約成功" || r.status === "審核中"
+              r.status === "approved" || r.status === "pending"
                 ? `<button class="cancel-btn" data-id="${r.booking_id}" data-starttime="${r.start_time}">取消</button>`
                 : ""
             }
