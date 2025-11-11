@@ -1,172 +1,11 @@
 // basketball.js - 排球場預約
 const API_BASE = "https://gym-booking-backend-1.onrender.com";
-// ====== 場地人數限制設定 ======
+
+// 場地人數限制設定
 const venuePeopleLimits = {
   5: { min: 6, max: 12 } // 排球場
 };
 
-// 秒數 → "HH:MM"
-function formatTime(seconds) {
-  const hrs = Math.floor(seconds / 3600);
-  const mins = Math.floor((seconds % 3600) / 60);
-  return `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}`;
-}
-
-// 產生學號輸入欄位
-function updateStudentIdInputs() {
-  const count = parseInt(document.getElementById('people-count').value);
-  const container = document.getElementById('student-id-inputs');
-  container.innerHTML = '';
-  if (isNaN(count) || count <= 0) return;
-
-  for (let i = 0; i < count; i++) {
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'form-input student-id';
-    input.placeholder = `請輸入第 ${i + 1} 位學生學號`;
-    container.appendChild(input);
-  }
-}
-
-// 載入可預約時段
-function loadAvailableSlots() {
-  const date = document.getElementById('booking-date').value;
-  const venueId = 5; // 排球場
-  const container = document.getElementById('time-slots-container');
-  container.innerHTML = '';
-
-  if (!date) return;
-fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`) 
-  .then(async (res) => {
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.error || '載入可預約時段失敗');
-
-    // 後端回傳物件，所以直接檢查 data.slots
-    if (!data.slots || data.slots.length === 0) {
-      container.innerHTML = '<p>此日無可預約時段。</p>';
-      return;
-    }
-
-    data.slots.forEach(slot => {
-      const startHHMM = formatTime(slot.start_time);
-      const endHHMM   = formatTime(slot.end_time);
-
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = 'time_slot';
-      input.value = `${startHHMM}|${endHHMM}`;
-      input.id = `slot_${slot.id}`;
-
-      const label = document.createElement('label');
-      label.htmlFor = input.id;
-      label.style.display = 'block';
-      label.style.cursor = 'pointer';
-      label.style.padding = '8px 0';
-      label.textContent = `${startHHMM} - ${endHHMM}`;
-
-      label.insertBefore(input, label.firstChild);
-      container.appendChild(label);
-    });
-  })
-  .catch(err => {
-    console.error(err);
-    container.innerHTML = '<p>無法載入時段，請稍後重試。</p>';
-  });
-
-}
-
-// 送出預約
-function handleBooking() {
-  const bookingDate = document.getElementById('booking-date').value;
-  const peopleCount = parseInt(document.getElementById('people-count').value);
-  const studentIds = Array.from(document.querySelectorAll('.student-id')).map(i => i.value.trim());
-  const contactPhone = document.getElementById('contact-phone').value.trim();
-
-  const userIdRaw = localStorage.getItem('user_id');
-  const userId = userIdRaw ? Number(userIdRaw) : null;
-  if (!userId) {
-    alert('請先登入再預約');
-    window.location.href = 'login.html';
-    return;
-  }
-
-  //電話號碼格式確認
-  const phone = document.getElementById('contact-phone').value.trim();
-  const phoneRegex = /^09\d{2}-?\d{3}-?\d{3}$/;
-
-  if (!phoneRegex.test(phone)) {
-    alert("電話格式錯誤，請輸入 09xx-xxx-xxx 或 09xxxxxxxx");
-    return;
-  }
-
-  //學號格式確認
-  const studentRegex = /^4\d{8}$/; // 第一個數字固定 4
-
-  if (studentIds.some(id => !/^4\d{8}$/.test(id.toUpperCase()))) {
-    alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
-    return;
-  }
-  
-  // ✅ 新增場地人數限制檢查
-  const limits = venuePeopleLimits[3]; // 排球場
-  if (limits && (peopleCount < limits.min || peopleCount > limits.max)) {
-    alert(`排球場人數需介於 ${limits.min} ~ ${limits.max} 人之間`);
-    return;
-  }
-
-  if (!bookingDate || isNaN(peopleCount) || peopleCount <= 0 || !contactPhone) {
-    alert('請確認：日期、人數、電話都已填寫');
-    return;
-  }
-  if (studentIds.length !== peopleCount || studentIds.some(id => id === "")) {
-    alert('請輸入所有學號，數量需與人數一致');
-    return;
-  }
-
-  const selected = document.querySelector('input[name="time_slot"]:checked');
-  if (!selected) {
-    alert('請選擇一個時段');
-    return;
-  }
-
-  const [startHHMM, endHHMM] = selected.value.split('|');
-  if (!startHHMM || !endHHMM) {
-    alert('時段格式錯誤，請重新選擇！');
-    return;
-  }
-
-  const bookingData = {
-    user_id: userId,
-    venue_id: 5, // 排球場
-    date: bookingDate,
-    time_slots: [startHHMM, endHHMM],
-    people_count: peopleCount,
-    contact_phone: contactPhone,
-    student_ids: studentIds
-  };
-
-   console.log("📤 排球場 Booking 資料即將送出：", bookingData);
-
-  fetch(`${API_BASE}/api/book`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(bookingData)
-  })
-  .then(async (r) => {
-    const res = await r.json();
-    if (!r.ok) throw res;  // ✅ 只修改這裡，直接丟物件
-    alert('排球場預約成功！');
-    window.location.reload();
-})
-.catch(err => {
-    console.error(err);
-    let msg = err.detail || "預約失敗";  // ✅ 只修改這裡，取 detail
-    alert(msg);
-});
-}
-
-// 綁定事件
 document.addEventListener('DOMContentLoaded', () => {
   const venueId = 5;
   const today = new Date().toISOString().split('T')[0];
@@ -181,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
-  // ✅ 動態產生學號輸入欄位
+  // 動態產生學號輸入欄位
   function updateStudentIdInputs() {
     const count = parseInt(peopleCountInput.value, 10);
     studentIdContainer.innerHTML = "";
@@ -200,7 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     peopleCountInput.addEventListener("change", updateStudentIdInputs);
   }
 
-  // ===== 載入可預約時段 =====
+  // 秒數 → "HH:MM"
+  function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
+  }
+
+  // 載入可預約時段（按鈕式）
   async function loadAvailableSlots() {
     const date = dateInput.value;
     if (!venueId || !date) return;
@@ -234,11 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
         startTime.setHours(startHour, startMin, 0, 0);
         endTime.setHours(endHour, endMin, 0, 0);
 
-        // 若時段已過，禁用並加上提示
+        // 時段已過，禁用
         if (endTime <= now) {
           slotBtn.disabled = true;
           slotBtn.classList.add("slot-disabled");
-          slotBtn.title = "此時間段已過無法預約"; // ✅ hover 顯示文字
+          slotBtn.title = "此時間段已過無法預約";
         }
 
         slotBtn.addEventListener("click", () => {
@@ -255,51 +101,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 時間格式轉換
-  function formatTime(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
-  }
-
-  // ===== 提交預約 =====
+  // 提交預約
   async function handleBooking() {
-    const date = dateInput.value;
-    const phone = document.getElementById("contact-phone")?.value;
-    const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value);
+    const bookingDate = dateInput.value;
+    const peopleCount = parseInt(peopleCountInput.value, 10);
+    const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value.trim());
+    const contactPhone = document.getElementById("contact-phone")?.value.trim();
 
-    // 檢查是否選擇時段
+    // 登入驗證
+    const userIdRaw = localStorage.getItem('user_id');
+    const userId = userIdRaw ? Number(userIdRaw) : null;
+    if (!userId) {
+      alert('請先登入再預約');
+      window.location.href = 'login.html';
+      return;
+    }
+
+    // 選擇時段檢查
     if (!selectedSlotId) {
       alert("請先選擇一個可預約時段！");
       return;
     }
 
-    // ✅ 驗證電話格式
+    // 電話格式驗證
     const phoneRegex = /^09\d{2}-?\d{3}-?\d{3}$/;
-    if (!phoneRegex.test(phone)) {
+    if (!phoneRegex.test(contactPhone)) {
       alert("電話格式錯誤，請輸入 09xx-xxx-xxx 或 09xxxxxxxx");
       return;
     }
 
-    // ✅ 驗證學號格式
+    // 學號格式驗證
     const studentRegex = /^4\d{8}$/;
-    for (let i = 0; i < studentIds.length; i++) {
-      if (!studentRegex.test(studentIds[i])) {
-        alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
-        return;
-      }
+    if (studentIds.some(id => !studentRegex.test(id))) {
+      alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
+      return;
+    }
+
+    // 場地人數限制
+    const limits = venuePeopleLimits[venueId];
+    if (limits && (peopleCount < limits.min || peopleCount > limits.max)) {
+      alert(`排球場人數需介於 ${limits.min} ~ ${limits.max} 人之間`);
+      return;
+    }
+
+    // 基本欄位檢查
+    if (!bookingDate || isNaN(peopleCount) || peopleCount <= 0 || !contactPhone) {
+      alert('請確認：日期、人數、電話都已填寫');
+      return;
+    }
+    if (studentIds.length !== peopleCount || studentIds.some(id => id === "")) {
+      alert('請輸入所有學號，數量需與人數一致');
+      return;
     }
 
     const payload = {
+      user_id: userId,
       venue_id: venueId,
-      slot_id: selectedSlotId,
-      date: date,
-      phone: phone,
+      time_slots: [startHHMM, endHHMM],    // ⚡ 改成後端要求的 ["HH:MM","HH:MM"]
+      people_count: studentIds.length,      // ⚡ 新增欄位
+      contact_phone: phone,                 // ⚡ 改名稱與後端一致
       student_ids: studentIds,
     };
 
+    console.log("📤 排球場 Booking 資料即將送出：", payload);
+
     try {
-      const res = await fetch(`${API_BASE}/api/reservations`, {
+      const res = await fetch(`${API_BASE}/book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -141,14 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const payload = {
       user_id: userId,
       venue_id: venueId,
-      slot_id: selectedSlotId,
-      date: date,
-      phone: phone,
+      time_slots: [startHHMM, endHHMM],    // ⚡ 改成後端要求的 ["HH:MM","HH:MM"]
+      people_count: studentIds.length,      // ⚡ 新增欄位
+      contact_phone: phone,                 // ⚡ 改名稱與後端一致
       student_ids: studentIds,
     };
 
     try {
-      const res = await fetch(`${API_BASE}/api/reservations`, {
+      const res = await fetch(`${API_BASE}/book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
