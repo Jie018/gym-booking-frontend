@@ -91,6 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
           document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
           slotBtn.classList.add("selected");
           selectedSlotId = slot.id;
+          // ⚡ 新增：記錄時間字串
+          startHHMM = formatTime(slot.start_time);
+          endHHMM = formatTime(slot.end_time);
         });
 
         slotContainer.appendChild(slotBtn);

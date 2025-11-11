@@ -6,6 +6,11 @@ const venuePeopleLimits = {
   1: { min: 1, max: 1 } // 健身中心
 };
 
+// 全域變數，紀錄選中時段
+let selectedSlotId = null;
+let startHHMM = null;
+let endHHMM = null;
+
 // 秒數 → "HH:MM"
 function formatTime(seconds) {
   const hrs = Math.floor(seconds / 3600);
@@ -14,8 +19,11 @@ function formatTime(seconds) {
 }
 
 // 產生學號輸入欄位
-function updateStudentIdInputs(count, container) {
-  container.innerHTML = '';
+function updateStudentIdInputs() {
+  const peopleCountInput = document.getElementById('people-count');
+  const studentIdContainer = document.getElementById('student-id-inputs');
+  const count = parseInt(peopleCountInput.value, 10);
+  studentIdContainer.innerHTML = '';
   if (isNaN(count) || count <= 0) return;
 
   for (let i = 0; i < count; i++) {
@@ -25,13 +33,17 @@ function updateStudentIdInputs(count, container) {
     input.placeholder = `請輸入第 ${i + 1} 位學生學號`;
     input.maxLength = 9;
     input.required = true;
-    container.appendChild(input);
+    studentIdContainer.appendChild(input);
   }
 }
 
 // 載入可預約時段 (按鈕式)
-async function loadAvailableSlots(venueId, date, container) {
-  container.innerHTML = '';
+async function loadAvailableSlots() {
+  const venueId = 1;
+  const dateInput = document.getElementById('booking-date');
+  const slotContainer = document.getElementById('time-slots-container');
+  const date = dateInput.value;
+  slotContainer.innerHTML = '';
   if (!venueId || !date) return;
 
   try {
@@ -40,12 +52,11 @@ async function loadAvailableSlots(venueId, date, container) {
     const slots = data.slots || [];
 
     if (slots.length === 0) {
-      container.innerHTML = "<p class='no-slot'>此日尚無預約時段</p>";
+      slotContainer.innerHTML = "<p class='no-slot'>此日尚無預約時段</p>";
       return;
     }
 
     const now = new Date();
-    let selectedSlotId = null;
 
     slots.forEach(slot => {
       const slotBtn = document.createElement("button");
@@ -73,21 +84,25 @@ async function loadAvailableSlots(venueId, date, container) {
         document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
         slotBtn.classList.add("selected");
         selectedSlotId = slot.id;
+        startHHMM = startText;
+        endHHMM = endText;
       });
 
-      container.appendChild(slotBtn);
+      slotContainer.appendChild(slotBtn);
     });
-
-    return () => selectedSlotId; // 回傳取得選中 slotId 的函數
 
   } catch (err) {
     console.error("刷新可預約時段失敗", err);
-    container.innerHTML = "<p>載入時段失敗，請稍後重試。</p>";
+    slotContainer.innerHTML = "<p>載入時段失敗，請稍後重試。</p>";
   }
 }
 
 // 提交預約
-async function handleBooking(venueId, dateInput, peopleCountInput, studentIdContainer, slotContainer) {
+async function handleBooking() {
+  const venueId = 1;
+  const dateInput = document.getElementById('booking-date');
+  const peopleCountInput = document.getElementById('people-count');
+  const studentIdContainer = document.getElementById('student-id-inputs');
   const bookingDate = dateInput.value;
   const peopleCount = parseInt(peopleCountInput.value, 10);
   const studentIds = Array.from(studentIdContainer.querySelectorAll('.student-id')).map(i => i.value.trim());
@@ -134,21 +149,19 @@ async function handleBooking(venueId, dateInput, peopleCountInput, studentIdCont
   }
 
   // 選擇時段
-  const selectedBtn = slotContainer.querySelector(".slot-btn.selected");
-  if (!selectedBtn) {
+  if (!selectedSlotId) {
     alert("請先選擇一個可預約時段！");
     return;
   }
-  const selectedSlotId = Array.from(slotContainer.children).findIndex(b => b === selectedBtn) + 1;
 
   const payload = {
-      user_id: userId,
-      venue_id: venueId,
-      time_slots: [startHHMM, endHHMM],    // ⚡ 改成後端要求的 ["HH:MM","HH:MM"]
-      people_count: studentIds.length,      // ⚡ 新增欄位
-      contact_phone: phone,                 // ⚡ 改名稱與後端一致
-      student_ids: studentIds,
-    };
+    user_id: userId,
+    venue_id: venueId,
+    time_slots: [startHHMM, endHHMM],
+    people_count: studentIds.length,
+    contact_phone: contactPhone,
+    student_ids: studentIds,
+  };
 
   console.log("📤 Booking 資料即將送出：", payload);
 
@@ -162,7 +175,7 @@ async function handleBooking(venueId, dateInput, peopleCountInput, studentIdCont
     const data = await res.json();
     if (res.ok) {
       alert("✅ 預約成功！");
-      loadAvailableSlots(venueId, bookingDate, slotContainer);
+      loadAvailableSlots();
     } else {
       alert(`❌ 預約失敗：${data.detail || "未知錯誤"}`);
     }
@@ -174,29 +187,18 @@ async function handleBooking(venueId, dateInput, peopleCountInput, studentIdCont
 
 // 綁定事件
 document.addEventListener('DOMContentLoaded', () => {
-  const venueId = 1;
-  const today = new Date().toISOString().split('T')[0];
-
   const dateInput = document.getElementById('booking-date');
-  const slotContainer = document.getElementById('time-slots-container');
   const peopleCountInput = document.getElementById('people-count');
-  const studentIdContainer = document.getElementById('student-id-inputs');
   const submitBtn = document.getElementById('submit-booking');
 
+  const today = new Date().toISOString().split('T')[0];
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
-  peopleCountInput.addEventListener('change', () => {
-    updateStudentIdInputs(parseInt(peopleCountInput.value, 10), studentIdContainer);
-  });
+  peopleCountInput.addEventListener('change', updateStudentIdInputs);
+  submitBtn.addEventListener('click', handleBooking);
 
-  submitBtn.addEventListener('click', () => {
-    handleBooking(venueId, dateInput, peopleCountInput, studentIdContainer, slotContainer);
-  });
-
-  updateStudentIdInputs(parseInt(peopleCountInput.value, 10), studentIdContainer);
-  loadAvailableSlots(venueId, dateInput.value, slotContainer);
-  dateInput.addEventListener('change', () => {
-    loadAvailableSlots(venueId, dateInput.value, slotContainer);
-  });
+  updateStudentIdInputs();
+  loadAvailableSlots();
+  dateInput.addEventListener('change', loadAvailableSlots);
 });

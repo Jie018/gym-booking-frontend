@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const studentIdContainer = document.getElementById('student-id-inputs');
   const submitBtn = document.getElementById('submit-booking');
   let selectedSlotId = null;
+  let startHHMM = null; // ⚡ 新增
+  let endHHMM = null;   // ⚡ 新增
 
   // 限制只能選今天以後的日期
   dateInput.setAttribute('min', today);
@@ -91,6 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
           document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
           slotBtn.classList.add("selected");
           selectedSlotId = slot.id;
+
+          // ⚡ 新增：記錄時間字串
+          startHHMM = formatTime(slot.start_time);
+          endHHMM = formatTime(slot.end_time);
         });
 
         slotContainer.appendChild(slotBtn);
