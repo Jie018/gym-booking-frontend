@@ -175,10 +175,10 @@ async function handleBooking() {
 
     const data = await res.json();
     if (res.ok) {
-      alert("✅ 預約成功！");
+      alert("健身中心預約成功！");
       loadAvailableSlots();
     } else {
-      alert(`❌ 預約失敗：${data.detail || "未知錯誤"}`);
+      alert(`健身中心預約失敗：${data.detail || "未知錯誤"}`);
     }
   } catch (err) {
     console.error("提交預約錯誤", err);

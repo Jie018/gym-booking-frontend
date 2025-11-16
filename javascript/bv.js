@@ -1,22 +1,28 @@
-// basketball.js
 const API_BASE = "https://gym-booking-backend-1.onrender.com";
-const venueId = 3; // 籃球場
+
+// ====== 場地人數限制設定 ======
 const venuePeopleLimits = {
-  3: { min: 5, max: 10 } // 籃球場人數限制
+  3: { min: 5, max: 10 } // 籃球場
 };
+
+// 全域變數，紀錄選中時段
+let selectedSlotId = null;
+let startHHMM = null;
+let endHHMM = null;
 
 // 秒數 → "HH:MM"
 function formatTime(seconds) {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
-  return `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}`;
+  return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
 }
 
 // 產生學號輸入欄位
 function updateStudentIdInputs() {
-  const count = parseInt(document.getElementById('people-count').value, 10);
-  const slotContainer = document.getElementById('student-id-inputs'); // ⚡ 改名保持一致
-  slotContainer.innerHTML = '';
+  const peopleCountInput = document.getElementById('people-count');
+  const studentIdContainer = document.getElementById('student-id-inputs');
+  const count = parseInt(peopleCountInput.value, 10);
+  studentIdContainer.innerHTML = '';
   if (isNaN(count) || count <= 0) return;
 
   for (let i = 0; i < count; i++) {
@@ -26,22 +32,23 @@ function updateStudentIdInputs() {
     input.placeholder = `請輸入第 ${i + 1} 位學生學號`;
     input.maxLength = 9;
     input.required = true;
-    slotContainer.appendChild(input);
+    studentIdContainer.appendChild(input);
   }
 }
 
-// 載入可預約時段
+// 載入可預約時段 (按鈕式)
 async function loadAvailableSlots() {
-  const date = document.getElementById('booking-date').value;
-  const slotContainer = document.getElementById('time-slots-container'); // ⚡ 統一名稱
+  const venueId = 3;
+  const dateInput = document.getElementById('booking-date');
+  const slotContainer = document.getElementById('time-slots-container');
+  const date = dateInput.value;
   slotContainer.innerHTML = '';
-  if (!date) return;
+  if (!venueId || !date) return;
 
   try {
     const res = await fetch(`${API_BASE}/api/available_slots?venue_id=${venueId}&date=${date}`);
     const data = await res.json();
     const slots = data.slots || [];
-    slotContainer.innerHTML = "";
 
     if (slots.length === 0) {
       slotContainer.innerHTML = "<p class='no-slot'>此日尚無預約時段</p>";
@@ -49,7 +56,6 @@ async function loadAvailableSlots() {
     }
 
     const now = new Date();
-    let selectedSlotId = null;
 
     slots.forEach(slot => {
       const slotBtn = document.createElement("button");
@@ -66,6 +72,7 @@ async function loadAvailableSlots() {
       startTime.setHours(startHour, startMin, 0, 0);
       endTime.setHours(endHour, endMin, 0, 0);
 
+      // 若時段已過，禁用並加上提示
       if (endTime <= now) {
         slotBtn.disabled = true;
         slotBtn.classList.add("slot-disabled");
@@ -76,17 +83,13 @@ async function loadAvailableSlots() {
         document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
         slotBtn.classList.add("selected");
         selectedSlotId = slot.id;
-
-        // ⚡ 記錄時間字串，供提交預約使用
-        startHHMM = formatTime(slot.start_time);
-        endHHMM = formatTime(slot.end_time);
-
-        // ⚡ 將選擇的 slot id 存到 container dataset
-        slotContainer.dataset.selectedSlotId = slot.id;
+        startHHMM = startText;
+        endHHMM = endText;
       });
 
       slotContainer.appendChild(slotBtn);
     });
+
   } catch (err) {
     console.error("刷新可預約時段失敗", err);
     slotContainer.innerHTML = "<p>載入時段失敗，請稍後重試。</p>";
@@ -95,10 +98,14 @@ async function loadAvailableSlots() {
 
 // 提交預約
 async function handleBooking() {
-  const date = document.getElementById("booking-date")?.value;
-  const phone = document.getElementById("contact-phone")?.value.trim();
-  const studentIds = Array.from(document.querySelectorAll(".student-id")).map(i => i.value.trim());
-  const peopleCount = parseInt(document.getElementById('people-count').value, 10);
+  const venueId = 3;
+  const dateInput = document.getElementById('booking-date');
+  const peopleCountInput = document.getElementById('people-count');
+  const studentIdContainer = document.getElementById('student-id-inputs');
+  const bookingDate = dateInput.value;
+  const peopleCount = parseInt(peopleCountInput.value, 10);
+  const studentIds = Array.from(studentIdContainer.querySelectorAll('.student-id')).map(i => i.value.trim());
+  const contactPhone = document.getElementById('contact-phone').value.trim();
 
   const userIdRaw = localStorage.getItem('user_id');
   const userId = userIdRaw ? Number(userIdRaw) : null;
@@ -108,28 +115,41 @@ async function handleBooking() {
     return;
   }
 
-  const slotContainer = document.getElementById('time-slots-container');
-  const selectedSlotId = slotContainer.dataset.selectedSlotId;
-  if (!selectedSlotId) {
-    alert("請先選擇一個可預約時段！");
+  // 人數限制檢查
+  const limits = venuePeopleLimits[venueId];
+  if (limits && (peopleCount < limits.min || peopleCount > limits.max)) {
+    alert(`籃球場人數需介於 ${limits.min} ~ ${limits.max} 人之間`);
     return;
   }
 
+  // 基本欄位檢查
+  if (!bookingDate || isNaN(peopleCount) || peopleCount <= 0 || !contactPhone) {
+    alert('請確認：日期、人數、電話都已填寫');
+    return;
+  }
+
+  if (studentIds.length !== peopleCount || studentIds.some(id => id === "")) {
+    alert('請輸入所有學號，數量需與人數一致');
+    return;
+  }
+
+  // 驗證電話格式
   const phoneRegex = /^09\d{2}-?\d{3}-?\d{3}$/;
-  if (!phoneRegex.test(phone)) {
+  if (!phoneRegex.test(contactPhone)) {
     alert("電話格式錯誤，請輸入 09xx-xxx-xxx 或 09xxxxxxxx");
     return;
   }
 
+  // 驗證學號格式
   const studentRegex = /^4\d{8}$/;
   if (studentIds.some(id => !studentRegex.test(id))) {
     alert("學號格式錯誤，每位學生必須輸入 4 開頭 + 8 個數字（共 9 碼）");
     return;
   }
 
-  const limits = venuePeopleLimits[venueId];
-  if (limits && (peopleCount < limits.min || peopleCount > limits.max)) {
-    alert(`籃球場人數需介於 ${limits.min} ~ ${limits.max} 人之間`);
+  // 選擇時段
+  if (!selectedSlotId) {
+    alert("請先選擇一個可預約時段！");
     return;
   }
 
@@ -139,23 +159,25 @@ async function handleBooking() {
       date: dateInput.value,            // ⚡ 新增：必填欄位
       time_slots: [startHHMM, endHHMM],
       people_count: studentIds.length,
-      contact_phone: phone,
+      contact_phone: contactPhone,
       student_ids: studentIds,
     };
 
+  console.log("📤 Booking 資料即將送出：", payload);
+
   try {
-    const res = await fetch(`${API_BASE}/book`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+    const res = await fetch(`${API_BASE}/api/book`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
 
+    const data = await res.json();
     if (res.ok) {
-      alert("✅ 預約成功！");
+      alert("籃球場預約成功！");
       loadAvailableSlots();
     } else {
-      const errData = await res.json();
-      alert(`❌ 預約失敗：${errData.detail || "未知錯誤"}`);
+      alert(`籃球場預約失敗：${data.detail || "未知錯誤"}`);
     }
   } catch (err) {
     console.error("提交預約錯誤", err);
@@ -173,11 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
   dateInput.setAttribute('min', today);
   dateInput.value = today;
 
-  if (peopleCountInput) peopleCountInput.addEventListener("change", updateStudentIdInputs);
+  peopleCountInput.addEventListener('change', updateStudentIdInputs);
+  submitBtn.addEventListener('click', handleBooking);
+
   updateStudentIdInputs();
-
-  if (dateInput) dateInput.addEventListener("change", loadAvailableSlots);
-  if (submitBtn) submitBtn.addEventListener("click", handleBooking);
-
   loadAvailableSlots();
+  dateInput.addEventListener('change', loadAvailableSlots);
 });
