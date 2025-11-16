@@ -160,7 +160,7 @@ async function handleBooking() {
       date: dateInput.value,            // ⚡ 新增：必填欄位
       time_slots: [startHHMM, endHHMM],
       people_count: studentIds.length,
-      contact_phone: phone,
+      contact_phone: contactPhone,
       student_ids: studentIds,
     };
 
