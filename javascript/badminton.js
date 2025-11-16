@@ -118,7 +118,7 @@ async function handleBooking() {
   // 人數限制檢查
   const limits = venuePeopleLimits[venueId];
   if (limits && (peopleCount < limits.min || peopleCount > limits.max)) {
-    alert(`羽球場人數需介於 ${limits.min} ~ ${limits.max} 人之間`);
+    alert(`羽球場數需介於 ${limits.min} ~ ${limits.max} 人之間`);
     return;
   }
 
