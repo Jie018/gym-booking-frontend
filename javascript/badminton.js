@@ -2,7 +2,7 @@ const API_BASE = "https://gym-booking-backend-1.onrender.com";
 
 // ====== 場地人數限制設定 ======
 const venuePeopleLimits = {
-  2: { min: 4, max: 8 } // 羽球場
+  2: { min: 2, max: 4 } // 羽球場
 };
 
 // 全域變數，紀錄選中時段
