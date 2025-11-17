@@ -1,6 +1,6 @@
 async function loadNews() {
     try {
-        const res = await fetch("data/latest_news.json");
+        const res = await fetch("https://gym-booking-backend-1.onrender.com/api/news");
         const news = await res.json();
 
         displayAnnouncements(news);
