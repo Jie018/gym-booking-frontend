@@ -1,29 +1,31 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
     background-color: #f8f9fa;
 }
-            
+
+/* ===== Header & Nav ===== */
 .header-container {
     display: flex;
     align-items: center;
-    background-color:  #2A3B4C;
+    background-color: #2c3e50;
     padding: 20px 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-            
+
 .title {
     flex-grow: 1;
     margin: 0;
     color: #f5f5f5;
 }
-            
+
 .nav-buttons {
     display: flex;
     gap: 10px;
 }
-            
+
+/* 原本的 button 樣式 */
 button {
     color: black;
     background-color: #f5f5f5;
@@ -34,230 +36,165 @@ button {
     transition: background-color 0.3s;
     font-weight: bold;
 }
-            
+
 button:hover {
     background-color: #c0c0c0;
 }
-            
-.main-content {
+
+/* 新增：導覽按鈕樣式 (共用設計，跟 reserve-button 一致) */
+.nav-button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 8px 15px;/* 控制按鈕內部間距 → 改變大小 */
+    border-radius: 5px;/* 改變圓角 */
+    font-size: 14px;/* 改變文字大小，也會影響整體視覺 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;   /* 移除底線 */
+    display: inline-block;   /* 讓 padding 生效 */
+    box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
+}
+
+.nav-button:hover {
+    background-color: #c0c0c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(57, 73, 171, 0.4);
+}
+
+.nav-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(57, 73, 171, 0.4);
+}
+
+
+/* Main container */
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-title {
+    font-size: 36px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: bold;
     display: flex;
-    padding: 20px;
-}
-
-/* 導航列樣式 */
-.navbar {
-  background-color: #2A3B4C;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 40px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  color: white;
-  text-decoration: none;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.navbar-brand img {
-  width: 45px;
-  height: 45px;
-}
-
-.navbar-menu {
-  display: flex;
-  gap: 30px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar-menu a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.05rem;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.navbar-menu a:hover {
-  color: #e0f0ff;
-}
-
-/* 預約流程區 */
-.booking-flow {
-  text-align: center;
-  padding: 80px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.booking-flow h2 {
-  font-size: 2.8rem;
-  font-weight: 800;
-  margin-bottom: 15px;
-}
-
-.flow-desc {
-  font-size: 1.4rem;
-  margin-bottom: 50px;
-  color: #555;
-}
-
-/* 步驟區塊 */
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  align-items: center;
-}
-
-.step {
-  width: 650px;
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(42, 59, 76, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
-  border-top: 6px solid #2A3B4C;
-}
-
-.step:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 36px rgba(42, 59, 76, 0.25);
-}
-
-.step img {
-  width: 100%;
-  height: 350px;
-  object-fit: cover;
-  border-radius: 14px;
-  margin-bottom: 20px;
-  border: 2px solid #cccccc;
-}
-
-.circle {
-  background-color: #2A3B4C;
-  color: white;
-  width: 55px;
-  height: 55px;
-  line-height: 55px;
-  border-radius: 50%;
-  margin: 0 auto 15px;
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-
-.step h3 {
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-}
-
-.step p {
-  font-size: 1.2rem;
-  color: #555;
-}
-
-/* LINE Bot 提示 */
-.linebot-section {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.linebot-hint {
-  background: #e0f0ff;
-  display: inline-block;
-  padding: 15px 30px;
-  border-radius: 16px;
-  color: #2A3B4C;
-  font-size: 1.2rem;
-  font-weight: 600;
-  box-shadow: 0 4px 16px rgba(42, 59, 76, 0.15);
-  transition: transform 0.2s ease;
-}
-
-.linebot-hint:hover {
-  transform: translateY(-3px);
-}
-
-.linebot-qrcode {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.linebot-qrcode img {
-  width: 200px;
-  height: 200px;
-  border-radius: 16px;
-  border: none;
-  box-shadow: 0 4px 16px rgba(42, 59, 76, 0.1);
-  background: transparent;
-  mix-blend-mode: multiply;
-}
-
-.linebot-qrcode p {
-  font-size: 1.15rem;
-  color: #2A3B4C;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-}
-
-/* 響應式 */
-@media screen and (max-width: 900px) {
-  .navbar {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px 20px;
-  }
-
-  .navbar-menu {
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
     gap: 15px;
-  }
 }
 
-@media screen and (max-width: 700px) {
-  .step {
-    width: 90%;
-  }
+.page-title::before {
+    content: '📢';
+    font-size: 40px;
+}
 
-  .step img {
-    height: 250px;
-  }
+.page-subtitle {
+    color: #666;
+    font-size: 17px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
 
-  .circle {
-    width: 45px;
-    height: 45px;
-    line-height: 45px;
-    font-size: 1.3rem;
-  }
+.data-source {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
 
-  .step h3 {
-    font-size: 1.4rem;
-  }
+.refresh-info {
+    color: #888;
+    font-size: 14px;
+    margin-top: 10px;
+}
 
-  .step p {
-    font-size: 1.1rem;
-  }
+/* Announcement list */
+.announcement-list {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
 
-  .linebot-qrcode img {
-    width: 180px;
-    height: 180px;
-  }
+.announcement-item {
+    padding: 30px 35px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: white;
+}
+
+.announcement-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.announcement-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.announcement-badge {
+    background: #5a6c7d;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.announcement-date {
+    color: #666;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.announcement-title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.announcement-icon {
+    font-size: 24px;
+}
+
+.announcement-title {
+    font-size: 19px;
+    color: #2c3e50;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.announcement-summary {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-left: 39px;
+    margin-bottom: 12px;
+}
+
+.view-more {
+    display: inline-block;
+    color: #2196F3;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    margin-left: 39px;
+}
+
+.view-more:hover {
+    color: #1976D2;
 }
