@@ -36,6 +36,27 @@ function updateStudentIdInputs() {
   }
 }
 
+function resetBookingForm() {
+  // 清空人數
+  const peopleCountInput = document.getElementById('people-count');
+  peopleCountInput.value = "";
+
+  // 清空學號輸入欄位
+  const studentIdContainer = document.getElementById('student-id-inputs');
+  studentIdContainer.innerHTML = "";
+
+  // 清空電話欄位
+  document.getElementById('contact-phone').value = "";
+
+  // 取消選擇時段按鈕
+  document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
+
+  // 重置選擇的時段資料
+  selectedSlotId = null;
+  startHHMM = null;
+  endHHMM = null;
+}
+
 // 載入可預約時段 (按鈕式)
 async function loadAvailableSlots() {
   const venueId = 4;
@@ -175,6 +196,7 @@ async function handleBooking() {
     const data = await res.json();
     if (res.ok) {
       alert("桌球場預約成功！");
+      resetBookingForm();
       loadAvailableSlots();
     } else {
       alert(`桌球場預約失敗：${data.detail || "未知錯誤"}`);
