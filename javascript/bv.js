@@ -38,8 +38,8 @@ function updateStudentIdInputs() {
 
 function resetBookingForm() {
   // 清空人數
-  const peopleCountInput = document.getElementById('people-count');
-  peopleCountInput.value = "";
+  // const peopleCountInput = document.getElementById('people-count');
+  // peopleCountInput.value = "";
 
   // 清空學號輸入欄位
   const studentIdContainer = document.getElementById('student-id-inputs');
@@ -49,12 +49,12 @@ function resetBookingForm() {
   document.getElementById('contact-phone').value = "";
 
   // 取消選擇時段按鈕
-  document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
+  // document.querySelectorAll(".slot-btn.selected").forEach(btn => btn.classList.remove("selected"));
 
-  // 重置選擇的時段資料
-  selectedSlotId = null;
-  startHHMM = null;
-  endHHMM = null;
+  // // 重置選擇的時段資料
+  // selectedSlotId = null;
+  // startHHMM = null;
+  // endHHMM = null;
 }
 
 // 載入可預約時段 (按鈕式)
