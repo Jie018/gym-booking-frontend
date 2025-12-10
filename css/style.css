@@ -1,3 +1,7 @@
+body {
+  font-family: Arial, sans-serif !important;
+}
+
 /* 導覽列區塊 */
 .navbar {
     position: fixed;
